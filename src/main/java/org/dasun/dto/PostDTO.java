@@ -6,7 +6,7 @@ import lombok.Setter;
 @Setter
 @ApplicationScoped
 public class PostDTO {
-    private int id;
+    private Long id;
     private String name;
     private String email;
     private String phone;

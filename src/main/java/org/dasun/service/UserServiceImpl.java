@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public String getUser(String id) {
-        User tempUser = userRepo.getUser(id);
+        User tempUser = userRepo.findByID(id);
         PostDTO tempDTO = userDTOMapper.mapUserAndDTO(tempUser);
         return tempDTO.toString();
     }
@@ -73,12 +73,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public User strToUser(String requestBody) {
         JSONObject jsonObject = new JSONObject(requestBody);
-        int id = jsonObject.getInt("id");
         String name = jsonObject.getString("name");
         String acc = jsonObject.getString("acc");
         String email = jsonObject.getString("email");
         String phone = jsonObject.getString("phone");
-        return new User(id,name,acc,email,phone);
+
+        User tempUser = new User();
+        tempUser.setName(name);
+        tempUser.setEmail(email);
+        tempUser.setAccNumber(acc);
+        tempUser.setPhoneNumber(phone);
+        return tempUser;
     }
 
     @Override
