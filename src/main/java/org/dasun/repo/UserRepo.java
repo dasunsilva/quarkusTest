@@ -1,17 +1,17 @@
 package org.dasun.repo;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import lombok.Getter;
 import org.dasun.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@ApplicationScoped
 public class UserRepo {
-    private List<User> userList = new ArrayList<>();
 
-    public List<User> getUserList() {
-        System.out.println(userList);
-        return userList;
-    }
+    private final List<User> userList = new ArrayList<>();
 
     public User getUser(String id){
         for(User user: userList){

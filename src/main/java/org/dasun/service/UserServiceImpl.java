@@ -1,19 +1,29 @@
 package org.dasun.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.dasun.dto.UserDTOMapper;
 import org.dasun.model.User;
 import org.dasun.dto.PostDTO;
 import org.dasun.repo.UserRepo;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService{
 
-    private UserRepo userRepo = new UserRepo();
+    @Inject
+    UserRepo userRepo;
 
-    private PostDTO postDTO = new PostDTO();
+    @Inject
+    UserDTOMapper userDTOMapper;
+
+    private static final String phoneNumberRegex = "^\\+94\\d{9}$";
+    private static final Pattern phoneNumberPattern = Pattern.compile(phoneNumberRegex);
 
     @Override
     public List<User> getAllUsers() {
@@ -21,18 +31,38 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getUser(String id) {
-        return userRepo.getUser(id);
+    public String getUser(String id) {
+        User tempUser = userRepo.getUser(id);
+        PostDTO tempDTO = userDTOMapper.mapUserAndDTO(tempUser);
+        return tempDTO.toString();
     }
 
     @Override
-    public String addUser(User user) {
-        return userRepo.addUser(user);
+    public String addUser(String request) {
+        User tempUser = strToUser(request);
+        if(phoneNumberValidator(tempUser)){
+            return userRepo.addUser(tempUser);
+        }else{
+            return "Enter a valid phone number in the form +94xxxxxxxxx";
+        }
+    }
+
+    private boolean phoneNumberValidator(User tempUser) {
+        if(tempUser.getPhoneNumber() == null){
+            return false;
+        }
+        Matcher matcher = phoneNumberPattern.matcher(tempUser.getPhoneNumber());
+        return matcher.matches();
     }
 
     @Override
-    public String updateUser(User user, String id) {
-        return userRepo.updateUser(user, id);
+    public String updateUser(String request, String id) {
+        User tempUser = strToUser(request);
+        if(phoneNumberValidator(tempUser)){
+            return userRepo.updateUser(tempUser, id);
+        }else{
+            return "Enter a valid phone number in the form +94xxxxxxxxx";
+        }
     }
 
     @Override
@@ -48,7 +78,18 @@ public class UserServiceImpl implements UserService{
         String acc = jsonObject.getString("acc");
         String email = jsonObject.getString("email");
         String phone = jsonObject.getString("phone");
-        User user = new User(id,name,acc,email,phone);
-        return user;
+        return new User(id,name,acc,email,phone);
+    }
+
+    @Override
+    public String getAllUsersAsString() {
+        List<PostDTO> tempDTOList = new ArrayList<>();
+        List<User> userList = getAllUsers();
+
+        for (User tempUser:userList) {
+            PostDTO postDTO = userDTOMapper.mapUserAndDTO(tempUser);
+            tempDTOList.add(postDTO);
+        }
+        return tempDTOList.toString();
     }
 }

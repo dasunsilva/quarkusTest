@@ -1,6 +1,7 @@
 package org.dasun.controller;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -12,39 +13,45 @@ import org.dasun.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 
-@ApplicationScoped
+/*
+
+Application Scoped Bean
+An @ApplicationScoped bean is created once for the entire application lifecycle and shared across all clients.
+
+Request Scoped Bean
+A @RequestScoped bean is created for each HTTP request and destroyed after the request is completed.
+
+Singleton Bean
+A @Singleton bean is similar to an @ApplicationScoped bean but has a more explicit singleton semantic.
+
+*/
+@RequestScoped
 @Path("users")
 public class UserController {
 
     @Inject
-    private UserService userService;
+    UserService userService;
 
-    private UserDTOMapper userDTOMapper = new UserDTOMapper();
+    @Inject
+    UserDTOMapper userDTOMapper;
+
     // --------------------------------------------------------------------------
-    // Get reqests
+    // Get requests
 
     // Get all
     @GET
     @Path("get")
     @Produces(MediaType.TEXT_PLAIN)
     public String getAllUsers(){
-        List<PostDTO> tempDTOList = new ArrayList<>();
-        List<User> userList = userService.getAllUsers();
-        for (User tempUser:userList) {
-            PostDTO postDTO = userDTOMapper.UserDTOMapper(tempUser);
-            tempDTOList.add(postDTO);
-        }
-        return tempDTOList.toString();
+        return userService.getAllUsersAsString();
     }
 
     // Get using id
     @GET
     @Path("get/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public PostDTO getUser(String id){
-        User tempUser = userService.getUser(id);
-        PostDTO tempDTO = userDTOMapper.UserDTOMapper(tempUser);
-        return tempDTO;
+    public String getUser(String id){
+        return userService.getUser(id);
     }
 
     // --------------------------------------------------------------------------
@@ -54,8 +61,7 @@ public class UserController {
     @POST
     @Path("add")
     public String addUser(String requestBody) {
-        User tempUser = userService.strToUser(requestBody);
-        return userService.addUser(tempUser);
+        return userService.addUser(requestBody);
     }
 
     // --------------------------------------------------------------------------
@@ -65,8 +71,7 @@ public class UserController {
     @PUT
     @Path("edit/{id}")
     public String editUser(@PathParam("id") String id, String requestBody) {
-        User tempUser = userService.strToUser(requestBody);
-        return userService.updateUser(tempUser,id);
+        return userService.updateUser(requestBody,id);
     }
 
     // --------------------------------------------------------------------------
