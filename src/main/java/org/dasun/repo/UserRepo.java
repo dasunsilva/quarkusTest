@@ -1,6 +1,6 @@
-package org.dasun.Repo;
+package org.dasun.repo;
 
-import org.dasun.Model.User;
+import org.dasun.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

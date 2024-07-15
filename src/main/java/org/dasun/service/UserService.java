@@ -1,6 +1,6 @@
-package org.dasun.Service;
+package org.dasun.service;
 
-import org.dasun.Model.User;
+import org.dasun.model.User;
 
 import java.util.List;
 

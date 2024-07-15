@@ -1,15 +1,13 @@
-package org.dasun.Controller;
+package org.dasun.controller;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import org.dasun.DTO.PostDTO;
-import org.dasun.DTO.UserDTOMapper;
-import org.dasun.Model.User;
-import org.dasun.Service.UserService;
-import org.dasun.Service.UserServiceImpl;
-import org.jboss.resteasy.reactive.*;
+import org.dasun.dto.PostDTO;
+import org.dasun.dto.UserDTOMapper;
+import org.dasun.model.User;
+import org.dasun.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,8 @@ import java.util.List;
 @Path("users")
 public class UserController {
 
-    private UserServiceImpl userService = new UserServiceImpl();
+    @Inject
+    private UserService userService;
 
     private UserDTOMapper userDTOMapper = new UserDTOMapper();
     // --------------------------------------------------------------------------

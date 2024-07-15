@@ -1,4 +1,4 @@
-package org.dasun.DTO;
+package org.dasun.dto;
 public class PostDTO {
     private int id;
     private String name;

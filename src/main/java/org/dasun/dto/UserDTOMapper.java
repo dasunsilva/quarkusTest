@@ -1,6 +1,6 @@
-package org.dasun.DTO;
+package org.dasun.dto;
 
-import org.dasun.Model.User;
+import org.dasun.model.User;
 public class UserDTOMapper {
     public PostDTO UserDTOMapper(User user) {
         PostDTO postDTO = new PostDTO();

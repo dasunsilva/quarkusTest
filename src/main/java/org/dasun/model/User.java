@@ -1,6 +1,4 @@
-package org.dasun.Model;
-
-import java.time.LocalDate;
+package org.dasun.model;
 
 public class User {
     private int id;

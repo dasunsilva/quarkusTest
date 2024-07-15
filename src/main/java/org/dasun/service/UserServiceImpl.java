@@ -1,11 +1,9 @@
-package org.dasun.Service;
+package org.dasun.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.json.JsonObject;
-import org.dasun.DTO.UserDTOMapper;
-import org.dasun.Model.User;
-import org.dasun.DTO.PostDTO;
-import org.dasun.Repo.UserRepo;
+import org.dasun.model.User;
+import org.dasun.dto.PostDTO;
+import org.dasun.repo.UserRepo;
 import org.json.JSONObject;
 
 import java.util.List;
