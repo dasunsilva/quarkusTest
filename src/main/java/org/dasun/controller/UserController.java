@@ -1,16 +1,13 @@
 package org.dasun.controller;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import org.dasun.dto.PostDTO;
-import org.dasun.dto.UserDTOMapper;
-import org.dasun.model.User;
+import org.dasun.dto.UserDTO;
 import org.dasun.service.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -32,25 +29,22 @@ public class UserController {
     @Inject
     UserService userService;
 
-    @Inject
-    UserDTOMapper userDTOMapper;
-
     // --------------------------------------------------------------------------
     // Get requests
 
     // Get all
     @GET
     @Path("get")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getAllUsers(){
-        return userService.getAllUsersAsString();
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UserDTO> getAllUsers(){
+        return userService.getAllUsers();
     }
 
     // Get using id
     @GET
     @Path("get/{id}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getUser(String id){
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserDTO getUser(@PathParam("id") Long id){
         return userService.getUser(id);
     }
 
@@ -60,8 +54,9 @@ public class UserController {
     // Add with request body
     @POST
     @Path("add")
-    public String addUser(String requestBody) {
-        return userService.addUser(requestBody);
+    @Produces(MediaType.APPLICATION_JSON)
+    public String addUser(@Valid UserDTO userDTO) {
+        return userService.addUser(userDTO);
     }
 
     // --------------------------------------------------------------------------
@@ -70,9 +65,11 @@ public class UserController {
     // Update using id and body
     @PUT
     @Path("edit/{id}")
-    public String editUser(@PathParam("id") String id, String requestBody) {
-        return userService.updateUser(requestBody,id);
+    @Produces(MediaType.APPLICATION_JSON)
+    public String editUser(@PathParam("id") Long id, @Valid UserDTO userDTO){
+        return userService.updateUser(userDTO,id);
     }
+
 
     // --------------------------------------------------------------------------
     // Delete Requests
@@ -80,8 +77,7 @@ public class UserController {
     // Delete using id
     @DELETE
     @Path("remove/{id}")
-    public String removeUser(@PathParam("id") String id) {
+    public String removeUser(@PathParam("id") Long id) {
         return userService.deleteUser(id);
     }
-
 }

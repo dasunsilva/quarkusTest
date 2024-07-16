@@ -1,44 +1,27 @@
 package org.dasun.repo;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import lombok.Getter;
 import org.dasun.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @ApplicationScoped
 public class UserRepo implements PanacheRepository<User> {
 
-    @Inject
-    UserRepo userRepo;
-
-    private final List<User> userList = new ArrayList<>();
-
-    public User getUser(String id){
-        for(User user: userList){
-            String userID = Long.toString(user.getId());
-            if(userID.equals(id)){
-                return user;
-            }
-        }
-        return null;
+    public List<User> getUserList() {
+        return listAll();
     }
 
-    public User findByID(String id){
-        return find("id", id).firstResult();
+    public User findByID(Long id){
+        return findById(id);
     }
-
 
     @Transactional
     public String addUser(User user) {
         try {
-            userRepo.persist(user);
+            persist(user);
             return "User is added succesfully";
         }catch (Exception e){
             return "User is not added. " + e.getMessage();
@@ -46,30 +29,29 @@ public class UserRepo implements PanacheRepository<User> {
     }
 
     @Transactional
-    public String updateUser(User user, String id){
-        User userIndex = null;
-        for(User tempUser: userList){
-            String userID = Long.toString(tempUser.getId());
-            if(userID.equals(id)){
-                userIndex = tempUser;
-                break;
-            }
-        }
+    public String updateUser(User user, Long id){
+        User newUser = findById(id);
+        newUser.setName(user.getName());
+        newUser.setEmail(user.getEmail());
+        newUser.setPhoneNumber(user.getPhoneNumber());
+        newUser.setAccountNumber(user.getAccountNumber());
 
-        int index = userList.indexOf(userIndex);
-        userList.remove(index);
-        userList.add(user);
-        return "User update successful!";
+        try{
+            persist(newUser);
+            return "User is updated succesfully";
+        }catch (Exception e){
+            return "User is not updated. " + e.getMessage();
+        }
     }
 
-    public String deleteUser(String id){
-        for(User tempUser: userList){
-            String userID = Long.toString(tempUser.getId());
-            if(userID.equals(id)){
-                userList.remove(tempUser);
-                return "User Deleted Successfully";
-            }
+    @Transactional
+    public String deleteUser(Long id) {
+        User tempUser = findByID(id);
+        try {
+            delete(tempUser);
+            return "User is deleted succesfully";
+        }catch (Exception e){
+            return "User delete failed. " + e.getMessage();
         }
-        return "User Delete failed!";
     }
 }
