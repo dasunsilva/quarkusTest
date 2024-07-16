@@ -5,21 +5,17 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @ApplicationScoped
-public class UserDTO {
+public class ItemDTO {
     private Long id;
 
     @Size(message = "Name is too short", min = 2)
     private String name;
 
-    @Email(message = "Email is not valid")
-    private String email;
-
-    private String phone;
-    private String accountNumber;
+    private int price;
+    private int stock;
 }

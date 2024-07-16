@@ -2,8 +2,8 @@ package org.dasun.service.implementation;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.dasun.dto.mappers.DTOtoUserMapper;
-import org.dasun.dto.mappers.UserToDTOMapper;
+import org.dasun.dto.mappers.ItemDTOMapper;
+import org.dasun.dto.mappers.UserDTOMapper;
 import org.dasun.model.User;
 import org.dasun.dto.UserDTO;
 import org.dasun.repo.UserRepo;
@@ -21,10 +21,7 @@ public class UserServiceImpl implements UserService {
     UserRepo userRepo;
 
     @Inject
-    DTOtoUserMapper DTOtoUserMapper;
-
-    @Inject
-    UserToDTOMapper userToDTOMapper;
+    UserDTOMapper userDTOMapper;
 
     private static final String phoneNumberRegex = "^\\+94\\d{9}$";
     private static final Pattern phoneNumberPattern = Pattern.compile(phoneNumberRegex);
@@ -34,7 +31,7 @@ public class UserServiceImpl implements UserService {
         List<User> tempUser = userRepo.getUserList();
         List<UserDTO> userDTOList = new ArrayList<>();
         for (User user : tempUser) {
-            userDTOList.add(userToDTOMapper.mapUserToDTO(user));
+            userDTOList.add(userDTOMapper.mapUserToDTO(user));
         }
         return userDTOList;
     }
@@ -42,13 +39,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUser(Long id) {
         User tempUser = userRepo.findByID(id);
-        return userToDTOMapper.mapUserToDTO(tempUser);
+        return userDTOMapper.mapUserToDTO(tempUser);
     }
 
     @Override
     public String addUser(UserDTO userDTO) {
         if(phoneNumberValidator(userDTO.getPhone())){
-            User tempUser = DTOtoUserMapper.mapDTOtoUser(userDTO);
+            User tempUser = userDTOMapper.mapDTOtoUser(userDTO);
             return userRepo.addUser(tempUser);
         }else{
             return "Enter a valid phone number in the form +94xxxxxxxxx";
@@ -66,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String updateUser(UserDTO userDTO, Long id) {
         if(phoneNumberValidator(userDTO.getPhone())){
-            User tempUser = DTOtoUserMapper.mapDTOtoUser(userDTO);
+            User tempUser = userDTOMapper.mapDTOtoUser(userDTO);
             return userRepo.updateUser(tempUser, id);
         }else{
             return "Enter a valid phone number in the form +94xxxxxxxxx";
