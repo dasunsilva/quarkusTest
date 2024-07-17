@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,4 +25,15 @@ public class Bill {
 
     @Column(name = "bill_amount",nullable = false)
     private int amount;
+
+    @ManyToOne
+    private User user;
+
+    @ManyToMany
+    @JoinTable(
+            name = "bill_items",
+            joinColumns = @JoinColumn(name = "bill_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
+    private List<Item> items;
 }

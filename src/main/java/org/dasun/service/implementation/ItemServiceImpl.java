@@ -2,6 +2,7 @@ package org.dasun.service.implementation;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.dasun.dto.ItemDTO;
 import org.dasun.dto.mappers.ItemDTOMapper;
 import org.dasun.model.Item;
@@ -24,7 +25,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDTO> getAllItems() {
-        List<Item> tempItem = itemRepo.getItemList();
+        // Get all items as a list of DTOs
+        List<Item> tempItem = itemRepo.listAll();
         List<ItemDTO> itemDTOList = new ArrayList<>();
         for (Item item : tempItem) {
             itemDTOList.add(itemDTOMapper.mapItemDTO(item));
@@ -34,34 +36,51 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO getItem(Long id) {
-        Item tempItem = itemRepo.findByID(id);
+        // Get item using ID
+        Item tempItem = itemRepo.findById(id);
         return itemDTOMapper.mapItemDTO(tempItem);
     }
 
+    @Transactional
     @Override
     public String addItem(ItemDTO itemDTO) {
-        try{
-            Item tempItem = itemDTOMapper.mapDTOItem(itemDTO);
-            itemRepo.addItem(tempItem);
-            return "Item added successfully";
+        // Create a item using DTO given
+        Item tempItem = itemDTOMapper.mapDTOItem(itemDTO);
+
+        try { // Save item
+            itemRepo.persist(tempItem);
+            return "Item is added succesfully";
         }catch (Exception e){
-            return "Item could not be added. " + e.getMessage();
+            return "Item is not added. " + e.getMessage();
         }
     }
 
+    @Transactional
     @Override
     public String updateItem(ItemDTO itemDTO, Long id) {
-        try{
-            Item tempItem = itemDTOMapper.mapDTOItem(itemDTO);
-            itemRepo.updateItem(tempItem,id);
-            return "Item updated successfully";
+        // We create a new item using the DTO given
+        Item newItem = itemRepo.findById(id);
+        newItem.setName(itemDTO.getName());
+        newItem.setPrice(itemDTO.getPrice());
+        newItem.setStock(itemDTO.getStock());
+
+        try{ // Save the new item aka updatw
+            itemRepo.persist(newItem);
+            return "Item is updated succesfully";
         }catch (Exception e){
-            return "Item could not be updated. " + e.getMessage();
+            return "Item is not updated. " + e.getMessage();
         }
     }
 
+    @Transactional
     @Override
     public String deleteItem(Long id) {
-        return itemRepo.deleteItem(id);
+        Item tempItem = itemRepo.findById(id);
+        try { // Delete the tempItem
+            itemRepo.delete(tempItem);
+            return "Item is deleted succesfully";
+        }catch (Exception e){
+            return "Item delete failed. " + e.getMessage();
+        }
     }
 }

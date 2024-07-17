@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -27,4 +29,7 @@ public class User {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "user")
+    private List<Bill> bills;
 }

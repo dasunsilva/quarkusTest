@@ -2,6 +2,7 @@ package org.dasun.service.implementation;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.dasun.dto.BillDTO;
 import org.dasun.dto.mappers.BillDTOMapper;
 import org.dasun.model.Bill;
@@ -23,7 +24,8 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public List<BillDTO> getAllBills() {
-        List<Bill> tempBill = billRepo.getBillList();
+        // Get all bills as a list of DTOs
+        List<Bill> tempBill = billRepo.listAll();
         List<BillDTO> billDTOList = new ArrayList<>();
         for (Bill bill : tempBill) {
             billDTOList.add(billDTOMapper.mapBillDTO(bill));
@@ -33,34 +35,50 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public BillDTO getBill(Long id) {
-        Bill tempBill = billRepo.findByID(id);
+        // Get bill using ID
+        Bill tempBill = billRepo.findById(id);
         return billDTOMapper.mapBillDTO(tempBill);
     }
 
+    @Transactional
     @Override
     public String addBill(BillDTO billDTO) {
-        try{
-            Bill tempBill = billDTOMapper.mapDTOBill(billDTO);
-            billRepo.addBill(tempBill);
-            return "Bill added successfully";
-        }catch(Exception e){
-            return "Bill could not be added";
+        // Create a bill using DTO given
+        Bill tempBill = billDTOMapper.mapDTOBill(billDTO);
+
+        try { // Save bill
+            billRepo.persist(tempBill);
+            return "Bill is added succesfully";
+        }catch (Exception e){
+            return "Bill is not added. " + e.getMessage();
         }
     }
 
+    @Transactional
     @Override
     public String updateBill(BillDTO billDTO, Long id) {
-        try{
-            Bill tempBill = billDTOMapper.mapDTOBill(billDTO);
-            billRepo.updateBill(tempBill,id);
-            return "Bill updated successfully";
-        }catch(Exception e){
-            return "Bill could not be updated";
+        // We create a new bill using the DTO given
+        Bill newBill = billRepo.findById(id);
+        newBill.setDate(billDTO.getDate());
+        newBill.setAmount(billDTO.getAmount());
+
+        try{// Save the new bill aka updatw
+            billRepo.persist(newBill);
+            return "Bill is updated succesfully";
+        }catch (Exception e){
+            return "Bill is not updated. " + e.getMessage();
         }
     }
 
+    @Transactional
     @Override
     public String deleteBill(Long id) {
-        return billRepo.deleteBill(id);
+        Bill tempBill = billRepo.findById(id);
+        try { // Delete the tempBill
+            billRepo.delete(tempBill);
+            return "Bill is deleted succesfully";
+        }catch (Exception e){
+            return "Bill delete failed. " + e.getMessage();
+        }
     }
 }
