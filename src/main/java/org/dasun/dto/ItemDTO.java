@@ -21,5 +21,6 @@ public class ItemDTO {
 
     private int price;
     private int stock;
+
     private List<Bill> bills;
 }

@@ -7,6 +7,7 @@ import org.dasun.dto.BillDTO;
 import org.dasun.dto.mappers.BillDTOMapper;
 import org.dasun.model.Bill;
 import org.dasun.repo.BillRepo;
+import org.dasun.repo.UserRepo;
 import org.dasun.service.BillService;
 
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ public class BillServiceImpl implements BillService {
 
     @Inject
     BillRepo billRepo;
+
+    @Inject
+    UserRepo userRepo;
 
     @Inject
     BillDTOMapper billDTOMapper;
@@ -61,8 +65,8 @@ public class BillServiceImpl implements BillService {
         Bill newBill = billRepo.findById(id);
         newBill.setDate(billDTO.getDate());
         newBill.setAmount(billDTO.getAmount());
-        newBill.setUser(billDTO.getUser());
-        newBill.setItems(billDTO.getItems());
+//        newBill.setUser(userRepo.findById(billDTO.getUserId()));
+//        newBill.setItems(billDTO.getItems());
 
         try{// Save the new bill aka updatw
             billRepo.persist(newBill);

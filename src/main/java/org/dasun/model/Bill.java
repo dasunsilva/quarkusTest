@@ -26,10 +26,11 @@ public class Bill {
     @Column(name = "bill_amount",nullable = false)
     private int amount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "bill_items",
             joinColumns = @JoinColumn(name = "bill_id"),

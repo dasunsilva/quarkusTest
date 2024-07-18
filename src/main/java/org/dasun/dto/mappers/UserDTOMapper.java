@@ -1,8 +1,14 @@
 package org.dasun.dto.mappers;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.dasun.dto.UserDTO;
+import org.dasun.model.Bill;
 import org.dasun.model.User;
+import org.dasun.repo.BillRepo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class UserDTOMapper {
@@ -14,7 +20,17 @@ public class UserDTOMapper {
         userDTO.setName(user.getName());
         userDTO.setEmail(user.getEmail());
         userDTO.setPhone(user.getPhoneNumber());
-        userDTO.setBills(user.getBills());
+
+        List<Bill> bills = new ArrayList<>();
+        for (Bill bill : user.getBills()) {
+            Bill tempBill = new Bill();
+            tempBill.setId(bill.getId());
+            tempBill.setDate(bill.getDate());
+            tempBill.setAmount(bill.getAmount());
+            bills.add(tempBill);
+        }
+        userDTO.setBills(bills);
+
 
         return userDTO;
 

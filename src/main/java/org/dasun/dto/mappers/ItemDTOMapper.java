@@ -2,7 +2,11 @@ package org.dasun.dto.mappers;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import org.dasun.dto.ItemDTO;
+import org.dasun.model.Bill;
 import org.dasun.model.Item;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class ItemDTOMapper {
@@ -14,7 +18,17 @@ public class ItemDTOMapper {
         itemDTO.setName(item.getName());
         itemDTO.setPrice(item.getPrice());
         itemDTO.setStock(item.getStock());
-        itemDTO.setBills(item.getBills());
+
+        List<Bill> bills = new ArrayList<>();
+
+        for (Bill bill : item.getBills()) {
+            Bill tempBill = new Bill();
+            tempBill.setId(bill.getId());
+            tempBill.setDate(bill.getDate());
+            tempBill.setAmount(bill.getAmount());
+            bills.add(tempBill);
+        }
+        itemDTO.setBills(bills);
 
         return itemDTO;
 
