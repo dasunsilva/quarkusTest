@@ -21,9 +21,6 @@ public class BillServiceImpl implements BillService {
     BillRepo billRepo;
 
     @Inject
-    UserRepo userRepo;
-
-    @Inject
     BillDTOMapper billDTOMapper;
 
     @Override
@@ -35,6 +32,7 @@ public class BillServiceImpl implements BillService {
             billDTOList.add(billDTOMapper.mapBillDTO(bill));
         }
         return billDTOList;
+
     }
 
     @Override
@@ -49,7 +47,6 @@ public class BillServiceImpl implements BillService {
     public String addBill(BillDTO billDTO) {
         // Create a bill using DTO given
         Bill tempBill = billDTOMapper.mapDTOBill(billDTO);
-
         try { // Save bill
             billRepo.persist(tempBill);
             return "Bill is added succesfully";
@@ -65,8 +62,6 @@ public class BillServiceImpl implements BillService {
         Bill newBill = billRepo.findById(id);
         newBill.setDate(billDTO.getDate());
         newBill.setAmount(billDTO.getAmount());
-//        newBill.setUser(userRepo.findById(billDTO.getUserId()));
-//        newBill.setItems(billDTO.getItems());
 
         try{// Save the new bill aka updatw
             billRepo.persist(newBill);

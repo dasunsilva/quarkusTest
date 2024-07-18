@@ -1,5 +1,8 @@
 package org.dasun.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +31,11 @@ public class Item {
     @Column(name = "item_stock", nullable = false)
     private int stock;
 
-    @ManyToMany(mappedBy = "items")
-    private List<Bill> bills;
+//    @ManyToMany(mappedBy = "items", fetch = FetchType.LAZY)
+//    @JsonIgnore
+//    private List<Bill> bills;
+
+    @OneToMany(mappedBy = "items")
+    private List<BillItems> billItems;
+
 }

@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.dasun.model.Bill;
-
 import java.util.List;
 
 @Getter
@@ -18,9 +17,7 @@ public class ItemDTO {
 
     @Size(message = "Name is too short", min = 2)
     private String name;
-
     private int price;
     private int stock;
-
-    private List<Bill> bills;
+    private List<Long> billIds;
 }

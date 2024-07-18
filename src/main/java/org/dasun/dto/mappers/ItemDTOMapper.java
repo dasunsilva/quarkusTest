@@ -18,18 +18,11 @@ public class ItemDTOMapper {
         itemDTO.setName(item.getName());
         itemDTO.setPrice(item.getPrice());
         itemDTO.setStock(item.getStock());
-
-        List<Bill> bills = new ArrayList<>();
-
+        List<Long> billIds = new ArrayList<>();
         for (Bill bill : item.getBills()) {
-            Bill tempBill = new Bill();
-            tempBill.setId(bill.getId());
-            tempBill.setDate(bill.getDate());
-            tempBill.setAmount(bill.getAmount());
-            bills.add(tempBill);
+            billIds.add(bill.getId());
         }
-        itemDTO.setBills(bills);
-
+        itemDTO.setBillIds(billIds);
         return itemDTO;
 
     }

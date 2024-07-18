@@ -27,23 +27,8 @@ public class BillDTOMapper {
         billDTO.setId(bill.getId());
         billDTO.setDate(bill.getDate());
         billDTO.setAmount(bill.getAmount());
-
-        User user = new User();
-        user.setId(bill.getUser().getId());
-        user.setName(bill.getUser().getName());
-        user.setEmail(bill.getUser().getEmail());
-        user.setPhoneNumber(bill.getUser().getPhoneNumber());
-        billDTO.setUser(user);
-
-        List<Item> items = new ArrayList<>();
-        for (Item item : bill.getItems()) {
-            Item tempItem = new Item();
-            tempItem.setId(item.getId());
-            tempItem.setName(item.getName());
-            tempItem.setPrice(item.getPrice());
-            items.add(tempItem);
-        }
-        billDTO.setItems(items);
+        billDTO.setItems(bill.getItems());
+        billDTO.setUser(bill.getUser());
         return billDTO;
 
     }
@@ -54,7 +39,8 @@ public class BillDTOMapper {
         bill.setId(billDTO.getId());
         bill.setDate(billDTO.getDate());
         bill.setAmount(billDTO.getAmount());
-
+        bill.setItems(billDTO.getItems());
+        bill.setUser(billDTO.getUser());
         User tempUser = userRepo.findById(billDTO.getUserId());
         bill.setUser(tempUser);
 
@@ -63,7 +49,6 @@ public class BillDTOMapper {
             itemList.add(itemRepo.findById(itemId));
         }
         bill.setItems(itemList);
-
         return bill;
 
     }

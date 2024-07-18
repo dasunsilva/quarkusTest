@@ -20,18 +20,11 @@ public class UserDTOMapper {
         userDTO.setName(user.getName());
         userDTO.setEmail(user.getEmail());
         userDTO.setPhone(user.getPhoneNumber());
-
-        List<Bill> bills = new ArrayList<>();
+        List<Long> billIds = new ArrayList<>();
         for (Bill bill : user.getBills()) {
-            Bill tempBill = new Bill();
-            tempBill.setId(bill.getId());
-            tempBill.setDate(bill.getDate());
-            tempBill.setAmount(bill.getAmount());
-            bills.add(tempBill);
+            billIds.add(bill.getId());
         }
-        userDTO.setBills(bills);
-
-
+        userDTO.setBillIDs(billIds);
         return userDTO;
 
     }

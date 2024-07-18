@@ -1,5 +1,7 @@
 package org.dasun.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +9,7 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,12 +32,15 @@ public class Bill {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+//
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "bill_items",
+//            joinColumns = @JoinColumn(name = "bill_id"),
+//            inverseJoinColumns = @JoinColumn(name = "item_id")
+//    )
+//    private List<Item> items;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "bill_items",
-            joinColumns = @JoinColumn(name = "bill_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id")
-    )
-    private List<Item> items;
+    @OneToMany(mappedBy = "bills")
+    private List<BillItems> billItems;
 }
