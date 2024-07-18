@@ -14,6 +14,7 @@ public class ItemDTOMapper {
         itemDTO.setName(item.getName());
         itemDTO.setPrice(item.getPrice());
         itemDTO.setStock(item.getStock());
+        itemDTO.setBills(item.getBills());
 
         return itemDTO;
 

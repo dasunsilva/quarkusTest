@@ -13,6 +13,8 @@ public class BillDTOMapper {
         billDTO.setId(bill.getId());
         billDTO.setDate(bill.getDate());
         billDTO.setAmount(bill.getAmount());
+        billDTO.setUser(bill.getUser());
+        billDTO.setItems(bill.getItems());
 
         return billDTO;
 

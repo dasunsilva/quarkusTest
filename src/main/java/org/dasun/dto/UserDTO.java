@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.dasun.model.Bill;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,5 +24,8 @@ public class UserDTO {
     private String email;
 
     private String phone;
+
     private String accountNumber;
+
+    private List<Bill> bills;
 }
