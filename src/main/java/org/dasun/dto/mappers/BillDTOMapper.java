@@ -27,10 +27,10 @@ public class BillDTOMapper {
         billDTO.setId(bill.getId());
         billDTO.setDate(bill.getDate());
         billDTO.setAmount(bill.getAmount());
-        billDTO.setItems(bill.getItems());
         billDTO.setUser(bill.getUser());
-        return billDTO;
 
+        // Items List?
+        return billDTO;
     }
 
     public Bill mapDTOBill(BillDTO billDTO) {
@@ -39,16 +39,8 @@ public class BillDTOMapper {
         bill.setId(billDTO.getId());
         bill.setDate(billDTO.getDate());
         bill.setAmount(billDTO.getAmount());
-        bill.setItems(billDTO.getItems());
-        bill.setUser(billDTO.getUser());
         User tempUser = userRepo.findById(billDTO.getUserId());
         bill.setUser(tempUser);
-
-        List<Item> itemList = new ArrayList<>();
-        for (Long itemId : billDTO.getItemId()){
-            itemList.add(itemRepo.findById(itemId));
-        }
-        bill.setItems(itemList);
         return bill;
 
     }

@@ -30,8 +30,8 @@ public class BillItemDTOMapper {
 
         billItemDTO.setId(billItems.getId());
         billItemDTO.setQuantity(billItems.getQuantity());
-        billItemDTO.setBillId(billItems.getBill().getId());
-        billItemDTO.setItemId(billItems.getItem().getId());
+        billItemDTO.setBillId(billItems.getBills().getId());
+        billItemDTO.setItemId(billItems.getItems().getId());
 
         return billItemDTO;
 
@@ -44,10 +44,10 @@ public class BillItemDTOMapper {
         billItems.setQuantity(billItemDTO.getQuantity());
 
         Bill bill = billRepo.findById(billItemDTO.getBillId());
-        billItems.setBill(bill);
+        billItems.setBills(bill);
 
         Item item = itemRepo.findById(billItemDTO.getItemId());
-        billItems.setItem(item);
+        billItems.setItems(item);
 
         return billItems;
 

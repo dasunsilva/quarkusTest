@@ -25,4 +25,6 @@ public class BillDTO {
 
     private List<Item> items;
     private User user;
+
+    private int quantity;
 }

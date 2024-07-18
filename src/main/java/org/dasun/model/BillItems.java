@@ -17,11 +17,11 @@ public class BillItems {
 
     @ManyToOne
     @JoinColumn(name = "bill_id")
-    private Bill bill;
+    private Bill bills;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
-    private Item item;
+    private Item items;
 
 
 }

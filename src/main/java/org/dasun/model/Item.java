@@ -31,10 +31,6 @@ public class Item {
     @Column(name = "item_stock", nullable = false)
     private int stock;
 
-//    @ManyToMany(mappedBy = "items", fetch = FetchType.LAZY)
-//    @JsonIgnore
-//    private List<Bill> bills;
-
     @OneToMany(mappedBy = "items")
     private List<BillItems> billItems;
 

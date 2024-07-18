@@ -32,14 +32,6 @@ public class Bill {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-//
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "bill_items",
-//            joinColumns = @JoinColumn(name = "bill_id"),
-//            inverseJoinColumns = @JoinColumn(name = "item_id")
-//    )
-//    private List<Item> items;
 
     @OneToMany(mappedBy = "bills")
     private List<BillItems> billItems;
