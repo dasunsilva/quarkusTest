@@ -1,6 +1,7 @@
 package org.dasun.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,6 +34,6 @@ public class Bill {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "bills")
+    @OneToMany(mappedBy = "bills", cascade = CascadeType.ALL)
     private List<BillItems> billItems;
 }

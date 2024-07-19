@@ -34,6 +34,5 @@ public class User {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<Bill> bills;
 }

@@ -1,12 +1,15 @@
 package org.dasun.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "bill_item")
 public class BillItems {
 
@@ -14,6 +17,7 @@ public class BillItems {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int quantity;
+    private int priceAtPurchase;
 
     @ManyToOne
     @JoinColumn(name = "bill_id")
