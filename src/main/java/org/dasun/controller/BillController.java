@@ -56,8 +56,8 @@ public class BillController {
     @PUT
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String editBill(@PathParam("id") Long id, BillDTO billDTO){
-        return billService.updateBill(billDTO,id);
+    public String editBill(@PathParam("id") Long id, BillDTO billDTO) {
+        return billService.updateBill(billDTO, id);
     }
 
 
