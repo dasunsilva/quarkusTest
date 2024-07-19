@@ -1,6 +1,7 @@
 package org.dasun.dto;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,8 +17,12 @@ import java.util.List;
 @ApplicationScoped
 public class BillItemDTO {
     private Long id;
+
     private String name;
+    @Min(value = 1, message = "Please enter a valid quantity")
     private int quantity;
+    @Min(value = 1, message = "Please enter a price at purchase")
+
     private int priceAtPurchase;
     private Long itemId;
     private Long billId;

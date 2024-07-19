@@ -31,7 +31,7 @@ public class Item {
     @Column(name = "item_stock", nullable = false)
     private int stock;
 
-    @OneToMany(mappedBy = "items")
+    @OneToMany(mappedBy = "items", fetch = FetchType.LAZY)
     private List<BillItems> billItems;
 
 }

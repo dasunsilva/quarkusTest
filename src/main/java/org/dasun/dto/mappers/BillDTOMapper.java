@@ -60,10 +60,12 @@ public class BillDTOMapper {
 
     public Bill mapDTOBill(BillDTO billDTO) {
         Bill bill = new Bill();
+
         bill.setId(billDTO.getId());
         bill.setDate(billDTO.getDate());
         bill.setAmount(billDTO.getAmount());
         bill.setUser(userRepo.findById(billDTO.getUserId()));
+
         List<BillItems> billItemsList = new ArrayList<>();
         for(BillItemDTO billItemDTO: billDTO.getBillItemDTOS()) {
             BillItems billItems = new BillItems();

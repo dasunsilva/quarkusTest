@@ -34,6 +34,6 @@ public class Bill {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "bills", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bills", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<BillItems> billItems;
 }

@@ -17,7 +17,12 @@ public class ItemDTO {
 
     @Size(message = "Name is too short", min = 2)
     private String name;
+
+    @Min(value = 1, message = "Please enter a valid price")
     private int price;
+
+    @Min(value = 1, message = "Please enter a valid stock number")
     private int stock;
+
     private List<Long> billIds;
 }
