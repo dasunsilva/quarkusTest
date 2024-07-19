@@ -4,7 +4,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.dasun.dto.BillDTO;
+import org.dasun.dto.BillItemDTO;
 import org.dasun.dto.mappers.BillDTOMapper;
+import org.dasun.dto.mappers.BillItemDTOMapper;
 import org.dasun.model.Bill;
 import org.dasun.model.BillItems;
 import org.dasun.model.Item;
@@ -14,6 +16,7 @@ import org.dasun.repo.ItemRepo;
 import org.dasun.repo.UserRepo;
 import org.dasun.service.BillService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -22,7 +25,7 @@ import java.util.regex.Matcher;
 public class BillServiceImpl implements BillService {
 
     @Inject
-    ItemRepo itemRepo;
+    UserRepo userRepo;
 
     @Inject
     BillRepo billRepo;
@@ -32,6 +35,9 @@ public class BillServiceImpl implements BillService {
 
     @Inject
     BillItemRepo billItemRepo;
+
+    @Inject
+    BillItemDTOMapper billItemDTOMapper;
 
     @Override
     public List<BillDTO> getAllBills() {
@@ -58,64 +64,42 @@ public class BillServiceImpl implements BillService {
         // Create a bill using DTO given
         Bill tempBill = billDTOMapper.mapDTOBill(billDTO);
 
-        List<BillItems> billItemsList = new ArrayList<>();
-        BillItems billItems = new BillItems();
-        billItems.setBills(tempBill);
-        billItems.setQuantity(billDTO.getQuantity());
-
-        for(Long itemId:billDTO.getItemId()){
-            Item item = itemRepo.findById(itemId);
-            billItems.setItems(item);
-            billItemsList.add(billItems);
-            try { // Save bill_item
-                billItemRepo.persist(billItems);
-            }catch (Exception e){
-                return e.getMessage();
-            }
-        }
-
-        tempBill.setBillItems(billItemsList);
-
         try { // Save bill
             billRepo.persist(tempBill);
-            return "Bill is added succesfully";
+            for(BillItems billItems : tempBill.getBillItems()){
+                billItems.setBills(tempBill);
+            }
+            billItemRepo.persist(tempBill.getBillItems());
+            return "Bill added successfully";
         }catch (Exception e){
             return "Bill is not added. " + e.getMessage();
         }
+
     }
 
     @Transactional
     @Override
     public String updateBill(BillDTO billDTO, Long id) {
-        // We create a new bill using the DTO given
-        Bill newBill = billRepo.findById(id);
-        newBill.setDate(billDTO.getDate());
-        newBill.setAmount(billDTO.getAmount());
+        Bill existingBill = billRepo.findById(id);
+        existingBill.setDate(billDTO.getDate());
+        existingBill.setAmount(billDTO.getAmount());
+        existingBill.setUser(userRepo.findById(billDTO.getUserId()));
 
-
-        List<BillItems> billItemsList = new ArrayList<>();
-        Bill tempBill = billDTOMapper.mapDTOBill(billDTO);
-        BillItems billItems = new BillItems();
-        billItems.setBills(tempBill);
-        billItems.setQuantity(billDTO.getQuantity());
-
-        for(Long itemId:billDTO.getItemId()){
-            Item item = itemRepo.findById(itemId);
-            billItems.setItems(item);
-            billItemsList.add(billItems);
-            try { // Save bill_item
-                billItemRepo.persist(billItems);
-            }catch (Exception e){
-                return e.getMessage();
-            }
+        for (BillItems billItems : existingBill.getBillItems()) {
+            billItemRepo.delete(billItems);
         }
 
-        newBill.setBillItems(billItemsList);
+        List<BillItems> billItemsList = new ArrayList<>();
+        for (BillItemDTO billItemDTO : billDTO.getBillItemDTOS()) {
+            billItemDTO.setBillId(existingBill.getId());
+            BillItems billItem = billItemDTOMapper.mapDTOBill(billItemDTO);
+            billItemsList.add(billItem);
+        }
+        existingBill.setBillItems(billItemsList);
 
-
-        try{// Save the new bill aka updatw
-            billRepo.persist(newBill);
-            return "Bill is updated succesfully";
+        try { // Save bill
+            billRepo.persist(existingBill);
+            return "Bill updated successfully";
         }catch (Exception e){
             return "Bill is not updated. " + e.getMessage();
         }

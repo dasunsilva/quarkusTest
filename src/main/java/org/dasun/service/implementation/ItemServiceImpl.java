@@ -11,8 +11,6 @@ import org.dasun.service.ItemService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @ApplicationScoped
 public class ItemServiceImpl implements ItemService {
