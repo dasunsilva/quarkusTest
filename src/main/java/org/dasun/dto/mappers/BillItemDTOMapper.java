@@ -13,6 +13,7 @@ import org.dasun.repo.BillRepo;
 import org.dasun.repo.ItemRepo;
 import org.dasun.repo.UserRepo;
 
+import javax.xml.transform.Source;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,29 +27,24 @@ public class BillItemDTOMapper {
     BillRepo billRepo;
 
     public BillItemDTO mapBillItemDTO(BillItems billItems) {
-        BillItemDTO billItemDTO = new BillItemDTO();
-
-        billItemDTO.setId(billItems.getId());
-        billItemDTO.setQuantity(billItems.getQuantity());
-        billItemDTO.setBillId(billItems.getBills().getId());
-        billItemDTO.setItemId(billItems.getItems().getId());
-
-        return billItemDTO;
+       BillItemDTO billItemDTO = new BillItemDTO();
+       billItemDTO.setId(billItems.getId());
+       billItemDTO.setName(billItems.getItems().getName());
+       billItemDTO.setQuantity(billItems.getQuantity());
+       billItemDTO.setPriceAtPurchase(billItems.getPriceAtPurchase());
+       billItemDTO.setItemId(billItems.getItems().getId());
+       billItemDTO.setBillId(billItems.getBills().getId());
+       return billItemDTO;
 
     }
 
     public BillItems mapDTOBill(BillItemDTO billItemDTO) {
         BillItems billItems = new BillItems();
-
         billItems.setId(billItemDTO.getId());
         billItems.setQuantity(billItemDTO.getQuantity());
-
-        Bill bill = billRepo.findById(billItemDTO.getBillId());
-        billItems.setBills(bill);
-
-        Item item = itemRepo.findById(billItemDTO.getItemId());
-        billItems.setItems(item);
-
+        billItems.setPriceAtPurchase(billItemDTO.getPriceAtPurchase());
+        billItems.setBills(billRepo.findById(billItemDTO.getBillId()));
+        billItems.setItems(itemRepo.findById(billItemDTO.getItemId()));
         return billItems;
 
     }

@@ -16,7 +16,10 @@ import java.util.List;
 @ApplicationScoped
 public class BillItemDTO {
     private Long id;
+    private String name;
     private int quantity;
+    private int priceAtPurchase;
     private Long itemId;
     private Long billId;
 }
+

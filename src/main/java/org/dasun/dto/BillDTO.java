@@ -9,21 +9,17 @@ import org.dasun.model.User;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @ToString
 @ApplicationScoped
-public class BillDTOInput {
+public class BillDTO {
     private Long id;
     private LocalDate date;
     private int amount;
-    private Long userId;
-
-    private List<Item> items;
-    private User user;
-
     private UserDTO userDTO;
-
+    private Long userId;
     private List<BillItemDTO> billItemDTOS;
 }
