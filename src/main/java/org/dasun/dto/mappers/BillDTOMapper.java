@@ -16,6 +16,9 @@ import org.dasun.repo.UserRepo;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class defines the mappings between bill and billDTO
+ */
 @ApplicationScoped
 public class BillDTOMapper {
 
@@ -31,6 +34,11 @@ public class BillDTOMapper {
     @Inject
     UserDTOMapper userDTOMapper;
 
+    /**
+     * This will take a bill object and return a billDTO
+     * @param bill is the bill object
+     * @return will be a billDTO
+     */
     public BillDTO mapBillDTO(Bill bill) {
         BillDTO billDTO = new BillDTO();
 
@@ -58,6 +66,11 @@ public class BillDTOMapper {
         return billDTO;
     }
 
+    /**
+     * This defines the mapping between billDTO and Bill
+     * @param billDTO is the user input
+     * @return will be a bill object corresponding to billDTO
+     */
     public Bill mapDTOBill(BillDTO billDTO) {
         Bill bill = new Bill();
 

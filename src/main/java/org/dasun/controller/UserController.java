@@ -22,17 +22,26 @@ Singleton Bean
 A @Singleton bean is similar to an @ApplicationScoped bean but has a more explicit singleton semantic.
 
 */
+
+
+/**
+ * This is the controller which interacts with the user
+ * @author Dasun
+ */
+
 @RequestScoped
 @Path("users")
 public class UserController {
-
+    /**
+     * This is used to get the user service
+     */
     @Inject
     UserService userService;
 
-    // --------------------------------------------------------------------------
-    // Get requests
-
-    // Get all
+    /**
+     * This method is used to get all user details
+     * @return A list of UserDTO which holds the details about bills.
+     */
     @GET
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON)
@@ -40,7 +49,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    // Get using id
+    /**
+     * This metood is used to get the user using the user id
+     * @param id The id of the user
+     * @return This will return a single UserDTO corresponding to the given id
+     */
     @GET
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -48,10 +61,12 @@ public class UserController {
         return userService.getUser(id);
     }
 
-    // --------------------------------------------------------------------------
-    // Post Requests
-
-    // Add with request body
+    /**
+     * This method is used to add a user to the database
+     * @param userDTO is the use input
+     * @return This will return a string telling the status of the add user.
+     * This will return a success message or a failure message depending on the situation
+     */
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
@@ -59,10 +74,13 @@ public class UserController {
         return userService.addUser(userDTO);
     }
 
-    // --------------------------------------------------------------------------
-    // Put Requests
-
-    // Update using id and body
+    /**
+     * This method is used to edit the user with the given id
+     * @param id The id of the user that need to be edited.
+     * @param userDTO This will contain the information of the new user that need to be updated
+     * @return return This will return a string telling the status of the edit user.
+     * This will return a success message or a failure message depending on the situation
+     */
     @PUT
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -71,10 +89,12 @@ public class UserController {
     }
 
 
-    // --------------------------------------------------------------------------
-    // Delete Requests
-
-    // Delete using id
+    /**'
+     * This will delete a user with the given id
+     * @param id The id of the user that need to be deleted
+     * @return return This will return a string telling the status of the add bill.
+     * This will return a success message or a failure message depending on the situation
+     */
     @DELETE
     @Path("remove/{id}")
     public String removeUser(@PathParam("id") Long id) {

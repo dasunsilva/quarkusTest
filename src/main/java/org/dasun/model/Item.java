@@ -10,6 +10,10 @@ import lombok.ToString;
 
 import java.util.List;
 
+/**
+ * This is the Item class
+ * This defines the fields that are in a Item object
+ */
 @Getter
 @Setter
 @ToString
@@ -31,6 +35,10 @@ public class Item {
     @Column(name = "item_stock", nullable = false)
     private int stock;
 
+    /*
+    This holds the information about the bill items.
+    Bill item will have bill id, item id, quantitu, price at purchase
+     */
     @OneToMany(mappedBy = "items", fetch = FetchType.LAZY)
     private List<BillItems> billItems;
 

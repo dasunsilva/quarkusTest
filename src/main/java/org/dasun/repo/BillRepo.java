@@ -7,5 +7,8 @@ import org.dasun.model.Bill;
 
 import java.util.List;
 
+/**
+ * Bill repo make bill related database transactions.
+ */
 @ApplicationScoped
 public class BillRepo implements PanacheRepository<Bill> {}

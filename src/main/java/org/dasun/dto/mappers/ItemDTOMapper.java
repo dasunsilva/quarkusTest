@@ -9,9 +9,17 @@ import org.dasun.model.Item;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class defines the mapping between item object and itemDTO object\
+ */
 @ApplicationScoped
 public class ItemDTOMapper {
 
+    /**
+     * This method will map the given Item object to a itemDTO
+     * @param item is the input from the repository
+     * @return this will return a itemDTO corresponding to the given item
+     */
     public ItemDTO mapItemDTO(Item item) {
         ItemDTO itemDTO = new ItemDTO();
 
@@ -28,6 +36,11 @@ public class ItemDTOMapper {
 
     }
 
+    /**
+     * This method will define the mapping between ItemDTO and item object
+     * @param itemDTO will be the user input
+     * @return this will return a Item object which can be used to store the item in the database
+     */
     public Item mapDTOItem(ItemDTO itemDTO) {
         Item item = new Item();
 

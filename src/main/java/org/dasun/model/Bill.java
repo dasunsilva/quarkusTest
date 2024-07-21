@@ -12,6 +12,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This is the bill class
+ * This defines the fields that are in a bill object
+ */
 @Getter
 @Setter
 @ToString
@@ -34,6 +38,10 @@ public class Bill {
     @JoinColumn(name = "user_id")
     private User user;
 
+    /*
+       This holds the information about the bill items.
+       Bill item will have bill id, item id, quantitu, price at purchase
+    */
     @OneToMany(mappedBy = "bills", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<BillItems> billItems;
 }

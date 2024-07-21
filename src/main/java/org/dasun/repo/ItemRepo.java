@@ -7,6 +7,9 @@ import org.dasun.model.Item;
 
 import java.util.List;
 
+/**
+ * Item repo make item related database transactions.
+ */
 @ApplicationScoped
 public class ItemRepo implements PanacheRepository<Item> {
 }

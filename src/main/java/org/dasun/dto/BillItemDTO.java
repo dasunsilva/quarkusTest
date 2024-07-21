@@ -11,6 +11,9 @@ import org.dasun.model.User;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * This class defines the fields of the Bill item data transfer object
+ */
 @Getter
 @Setter
 @ToString

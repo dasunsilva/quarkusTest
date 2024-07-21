@@ -10,9 +10,16 @@ import org.dasun.repo.BillRepo;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class defines the mapping between user object and userDTO object
+ */
 @ApplicationScoped
 public class UserDTOMapper {
-
+    /**
+     * This method will map the given User object to a userDTO
+     * @param user is the input from the repository
+     * @return this will return a userDTO corresponding to the given item
+     */
     public UserDTO mapUserToDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
@@ -28,7 +35,11 @@ public class UserDTOMapper {
         return userDTO;
 
     }
-
+    /**
+     * This method will define the mapping between UserDTO and User object
+     * @param userDTO will be the user input
+     * @return this will return a User object which can be used to store the User in the database
+     */
     public User mapDTOtoUser(UserDTO userDTO) {
         User user = new User();
 

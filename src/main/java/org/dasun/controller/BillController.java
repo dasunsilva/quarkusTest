@@ -11,17 +11,24 @@ import org.dasun.service.BillService;
 
 import java.util.List;
 
+/**
+ * This is the controller which interacts with the user
+ * @author Dasun
+ */
 @RequestScoped
 @Path("bills")
 public class BillController {
 
+    /**
+     * This is used to get the bill service
+     */
     @Inject
     BillService billService;
 
-    // --------------------------------------------------------------------------
-    // Get requests
-
-    // Get all
+    /**
+     * This method is used to get all bill details
+     * @return A list of BillDTO which holds the the details about bills.
+     */
     @GET
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON)
@@ -29,7 +36,11 @@ public class BillController {
         return billService.getAllBills();
     }
 
-    // Get using id
+    /**
+     * This metood is used to get the bill using teh bill id
+     * @param id The id of the bill
+     * @return This will return a single BillDTO corresponding to the given id
+     */
     @GET
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -37,10 +48,12 @@ public class BillController {
         return billService.getBill(id);
     }
 
-    // --------------------------------------------------------------------------
-    // Post Requests
-
-    // Add with request body
+    /**
+     * This method is used to add a bill to the database
+     * @param billDTO is the use input
+     * @return This will return a string telling the status of the add bill.
+     * This will return a success message or a failure message depending on the situation
+     */
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
@@ -48,11 +61,13 @@ public class BillController {
         return billService.addBill(billDTO);
     }
 
-
-    // --------------------------------------------------------------------------
-    // Put Requests
-
-    // Update using id and body
+    /**
+     * This method is used to edit the bill with the given id
+     * @param id The id of the bill user want to edit
+     * @param billDTO This will contain the information of the new bill that need to be updated
+     * @return return This will return a string telling the status of the add bill.
+     * This will return a success message or a failure message depending on the situation
+     */
     @PUT
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -60,11 +75,12 @@ public class BillController {
         return billService.updateBill(billDTO, id);
     }
 
-
-    // --------------------------------------------------------------------------
-    // Delete Requests
-
-    // Delete using id
+    /**'
+     * This will delete a bill with the given id
+     * @param id The id of the bill that need to be deleted
+     * @return return This will return a string telling the status of the delete bill.
+     * This will return a success message or a failure message depending on the situation
+     */
     @DELETE
     @Path("remove/{id}")
     public String removeBill(@PathParam("id") Long id) {

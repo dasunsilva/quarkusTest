@@ -17,6 +17,9 @@ import javax.xml.transform.Source;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is the class used to get the mapping between billItem to billItemDTO
+ */
 @ApplicationScoped
 public class BillItemDTOMapper {
 
@@ -26,6 +29,11 @@ public class BillItemDTOMapper {
     @Inject
     BillRepo billRepo;
 
+    /**
+     * This method will map the given billItem object to a billItemDTO
+     * @param billItems is the use input
+     * @return will return a BillItemDTO corresponding to the user input
+     */
     public BillItemDTO mapBillItemDTO(BillItems billItems) {
        BillItemDTO billItemDTO = new BillItemDTO();
        billItemDTO.setId(billItems.getId());
@@ -38,6 +46,11 @@ public class BillItemDTOMapper {
 
     }
 
+    /**
+     * This method will map the given billItemDTO object to a billItem object
+     * @param billItemDTO is the user input
+     * @return will return a BillItem object
+     */
     public BillItems mapDTOBill(BillItemDTO billItemDTO) {
         BillItems billItems = new BillItems();
         billItems.setId(billItemDTO.getId());

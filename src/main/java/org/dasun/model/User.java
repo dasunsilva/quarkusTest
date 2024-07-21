@@ -9,6 +9,10 @@ import org.hibernate.annotations.Comment;
 
 import java.util.List;
 
+/**
+ * This is the User class
+ * This defines the fields that are in a User object
+ */
 @Getter
 @Setter
 @ToString

@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * This is the billItem class
+ * This defines the fields that are in a billItem object
+ */
 @Getter
 @Setter
 @Entity

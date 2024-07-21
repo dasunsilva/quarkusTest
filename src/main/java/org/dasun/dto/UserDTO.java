@@ -10,6 +10,9 @@ import lombok.Setter;
 import org.dasun.model.Bill;
 import java.util.List;
 
+/**
+ * This class defines the fields of the User data transfer object
+ */
 @Getter
 @Setter
 @ApplicationScoped
