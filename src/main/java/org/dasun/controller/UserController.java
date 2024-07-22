@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.dasun.dto.UserDTO;
+import org.dasun.exceptions.DatabaseException;
+import org.dasun.exceptions.InvalidLongException;
 import org.dasun.service.UserService;
 
 import java.util.List;
@@ -58,7 +60,11 @@ public class UserController {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public UserDTO getUser(@PathParam("id") Long id){
-        return userService.getUser(id);
+        try{
+            return userService.getUser(id);
+        }catch (InvalidLongException ile){
+            return null;
+        }
     }
 
     /**
@@ -71,7 +77,11 @@ public class UserController {
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
     public String addUser(@Valid UserDTO userDTO) {
-        return userService.addUser(userDTO);
+        try {
+            return userService.addUser(userDTO);
+        } catch (DatabaseException e) {
+            return e.getMessage();
+        }
     }
 
     /**
@@ -85,7 +95,11 @@ public class UserController {
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String editUser(@PathParam("id") Long id, @Valid UserDTO userDTO){
-        return userService.updateUser(userDTO,id);
+        try {
+            return userService.updateUser(userDTO,id);
+        } catch (DatabaseException e) {
+            return e.getMessage();
+        }
     }
 
 
@@ -98,6 +112,10 @@ public class UserController {
     @DELETE
     @Path("remove/{id}")
     public String removeUser(@PathParam("id") Long id) {
-        return userService.deleteUser(id);
+        try {
+            return userService.deleteUser(id);
+        } catch (DatabaseException e) {
+            return e.getMessage();
+        }
     }
 }

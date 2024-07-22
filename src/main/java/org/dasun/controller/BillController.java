@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.dasun.dto.BillDTO;
+import org.dasun.exceptions.DatabaseException;
+import org.dasun.exceptions.InvalidLongException;
 import org.dasun.service.BillService;
 import org.dasun.service.BillService;
 
@@ -45,7 +47,12 @@ public class BillController {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public BillDTO getBill(@PathParam("id") Long id){
-        return billService.getBill(id);
+
+        try{
+            return billService.getBill(id);
+        }catch (InvalidLongException ile){
+            return null;
+        }
     }
 
     /**
@@ -58,7 +65,11 @@ public class BillController {
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
     public String addBill(BillDTO billDTO) {
-        return billService.addBill(billDTO);
+        try {
+            return billService.addBill(billDTO);
+        } catch (DatabaseException e) {
+            return e.getMessage();
+        }
     }
 
     /**
@@ -72,7 +83,11 @@ public class BillController {
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String editBill(@PathParam("id") Long id, BillDTO billDTO) {
-        return billService.updateBill(billDTO, id);
+        try {
+            return billService.updateBill(billDTO, id);
+        } catch (DatabaseException e) {
+            return e.getMessage();
+        }
     }
 
     /**'
@@ -84,6 +99,10 @@ public class BillController {
     @DELETE
     @Path("remove/{id}")
     public String removeBill(@PathParam("id") Long id) {
-        return billService.deleteBill(id);
+        try {
+            return billService.deleteBill(id);
+        } catch (DatabaseException e) {
+            return e.getMessage();
+        }
     }
 }

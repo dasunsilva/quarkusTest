@@ -7,15 +7,20 @@ import org.dasun.dto.BillDTO;
 import org.dasun.dto.BillItemDTO;
 import org.dasun.dto.mappers.BillDTOMapper;
 import org.dasun.dto.mappers.BillItemDTOMapper;
+import org.dasun.exceptions.DatabaseException;
+import org.dasun.exceptions.InvalidLongException;
 import org.dasun.model.Bill;
 import org.dasun.model.BillItems;
 import org.dasun.model.Item;
+import org.dasun.model.User;
 import org.dasun.repo.BillItemRepo;
 import org.dasun.repo.BillRepo;
 import org.dasun.repo.ItemRepo;
 import org.dasun.repo.UserRepo;
 import org.dasun.service.BillService;
+import org.hibernate.dialect.Database;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +63,14 @@ public class BillServiceImpl implements BillService {
      * {@inheritDoc}
      */
     @Override
-    public BillDTO getBill(Long id) {
+    public BillDTO getBill(Long id) throws InvalidLongException{
         // Get bill using ID
-        Bill tempBill = billRepo.findById(id);
-        return billDTOMapper.mapBillDTO(tempBill);
+        if(id == null){
+            throw new InvalidLongException("Id can't be empty");
+        }else{
+            Bill tempBill = billRepo.findById(id);
+            return billDTOMapper.mapBillDTO(tempBill);
+        }
     }
 
     /**
@@ -69,7 +78,7 @@ public class BillServiceImpl implements BillService {
      */
     @Transactional
     @Override
-    public String addBill(BillDTO billDTO) {
+    public String addBill(BillDTO billDTO) throws DatabaseException {
         // Create a bill using DTO given
         Bill tempBill = billDTOMapper.mapDTOBill(billDTO);
 
@@ -81,7 +90,7 @@ public class BillServiceImpl implements BillService {
             billItemRepo.persist(tempBill.getBillItems());
             return "Bill added successfully";
         }catch (Exception e){
-            return "Bill is not added. " + e.getMessage();
+            throw new DatabaseException("Error when adding the bill");
         }
 
     }
@@ -91,7 +100,7 @@ public class BillServiceImpl implements BillService {
      */
     @Transactional
     @Override
-    public String updateBill(BillDTO billDTO, Long id) {
+    public String updateBill(BillDTO billDTO, Long id) throws DatabaseException{
 
         // TODO : Find a better implementation for this
 
@@ -116,7 +125,8 @@ public class BillServiceImpl implements BillService {
             billRepo.persist(existingBill);
             return "Bill updated successfully";
         }catch (Exception e){
-            return "Bill is not updated. " + e.getMessage();
+            throw new DatabaseException("Error when updating the bill");
+
         }
     }
 
@@ -125,13 +135,14 @@ public class BillServiceImpl implements BillService {
      */
     @Transactional
     @Override
-    public String deleteBill(Long id) {
+    public String deleteBill(Long id) throws DatabaseException{
         Bill tempBill = billRepo.findById(id);
         try { // Delete the tempBill
             billRepo.delete(tempBill);
             return "Bill is deleted succesfully";
         }catch (Exception e){
-            return "Bill delete failed. " + e.getMessage();
+            throw new DatabaseException("Error when deleting the bill");
+
         }
     }
 }

@@ -5,10 +5,14 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.dasun.dto.ItemDTO;
 import org.dasun.dto.mappers.ItemDTOMapper;
+import org.dasun.exceptions.DatabaseException;
+import org.dasun.exceptions.InvalidLongException;
+import org.dasun.model.Bill;
 import org.dasun.model.Item;
 import org.dasun.repo.ItemRepo;
 import org.dasun.service.ItemService;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,26 +43,13 @@ public class ItemServiceImpl implements ItemService {
      * {@inheritDoc}
      */
     @Override
-    public ItemDTO getItem(Long id) {
+    public ItemDTO getItem(Long id) throws InvalidLongException {
         // Get item using ID
-        Item tempItem = itemRepo.findById(id);
-        return itemDTOMapper.mapItemDTO(tempItem);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
-    public String addItem(ItemDTO itemDTO) {
-        // Create a item using DTO given
-        Item tempItem = itemDTOMapper.mapDTOItem(itemDTO);
-
-        try { // Save item
-            itemRepo.persist(tempItem);
-            return "Item is added succesfully";
-        }catch (Exception e){
-            return "Item is not added. " + e.getMessage();
+        if(id == null){
+            throw new InvalidLongException("Id can't be empty");
+        }else{
+            Item tempItem = itemRepo.findById(id);
+            return itemDTOMapper.mapItemDTO(tempItem);
         }
     }
 
@@ -67,7 +58,24 @@ public class ItemServiceImpl implements ItemService {
      */
     @Transactional
     @Override
-    public String updateItem(ItemDTO itemDTO, Long id) {
+    public String addItem(ItemDTO itemDTO) throws DatabaseException {
+        // Create a item using DTO given
+        Item tempItem = itemDTOMapper.mapDTOItem(itemDTO);
+
+        try { // Save item
+            itemRepo.persist(tempItem);
+            return "Item is added succesfully";
+        }catch (Exception e){
+            throw new DatabaseException("Error while adding new item");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public String updateItem(ItemDTO itemDTO, Long id) throws DatabaseException {
         // We create a new item using the DTO given
         Item newItem = itemRepo.findById(id);
         newItem.setName(itemDTO.getName());
@@ -78,7 +86,8 @@ public class ItemServiceImpl implements ItemService {
             itemRepo.persist(newItem);
             return "Item is updated succesfully";
         }catch (Exception e){
-            return "Item is not updated. " + e.getMessage();
+            throw new DatabaseException("Error while updating new item");
+
         }
     }
 
@@ -87,13 +96,14 @@ public class ItemServiceImpl implements ItemService {
      */
     @Transactional
     @Override
-    public String deleteItem(Long id) {
+    public String deleteItem(Long id) throws DatabaseException {
         Item tempItem = itemRepo.findById(id);
         try { // Delete the tempItem
             itemRepo.delete(tempItem);
             return "Item is deleted succesfully";
         }catch (Exception e){
-            return "Item delete failed. " + e.getMessage();
+            throw new DatabaseException("Error while updating new item");
+
         }
     }
 }

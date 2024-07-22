@@ -3,8 +3,10 @@ package org.dasun.service.implementation;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.dasun.dto.mappers.ItemDTOMapper;
 import org.dasun.dto.mappers.UserDTOMapper;
+import org.dasun.exceptions.DatabaseException;
+import org.dasun.exceptions.InvalidLongException;
+import org.dasun.exceptions.InvalidPhoneNumberException;
 import org.dasun.model.User;
 import org.dasun.dto.UserDTO;
 import org.dasun.repo.UserRepo;
@@ -48,30 +50,13 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public UserDTO getUser(Long id) {
+    public UserDTO getUser(Long id) throws InvalidLongException {
         // Get user using ID
-        User tempUser = userRepo.findById(id);
-        return userDTOMapper.mapUserToDTO(tempUser);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
-    public String addUser(UserDTO userDTO) {
-        // To validate the phone number
-        if(phoneNumberValidator(userDTO.getPhone())){
-            // Create a user using DTO given
-            User tempUser = userDTOMapper.mapDTOtoUser(userDTO);
-            try { // Save the user
-                userRepo.persist(tempUser);
-                return "User is added succesfully";
-            }catch (Exception e){
-                return "User is not added. " + e.getMessage();
-            }
+        if(id == null){
+            throw new InvalidLongException("Id can't be empty");
         }else{
-            return "Enter a valid phone number in the form +94xxxxxxxxx";
+            User tempUser = userRepo.findById(id);
+            return userDTOMapper.mapUserToDTO(tempUser);
         }
     }
 
@@ -80,7 +65,28 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public String updateUser(UserDTO userDTO, Long id) {
+    public String addUser(UserDTO userDTO) throws DatabaseException, InvalidPhoneNumberException {
+        // To validate the phone number
+        if(phoneNumberValidator(userDTO.getPhone())){
+            // Create a user using DTO given
+            User tempUser = userDTOMapper.mapDTOtoUser(userDTO);
+            try { // Save the user
+                userRepo.persist(tempUser);
+                return "User is added succesfully";
+            }catch (Exception e){
+                throw new DatabaseException("Error when adding the user");
+            }
+        }else{
+            throw new InvalidPhoneNumberException();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public String updateUser(UserDTO userDTO, Long id) throws DatabaseException, InvalidPhoneNumberException {
         // To validate the phone number
         if(phoneNumberValidator(userDTO.getPhone())){
             // Temp user will be the user input
@@ -97,10 +103,10 @@ public class UserServiceImpl implements UserService {
                 userRepo.persist(newUser);
                 return "User is updated succesfully";
             }catch (Exception e){
-                return "User is not updated. " + e.getMessage();
+                throw new DatabaseException("Error when updating the user");
             }
         }else{
-            return "Enter a valid phone number in the form +94xxxxxxxxx";
+            throw new InvalidPhoneNumberException();
         }
     }
 
@@ -109,13 +115,13 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     @Override
-    public String deleteUser(Long id) {
+    public String deleteUser(Long id) throws DatabaseException {
         User tempUser = userRepo.findById(id);
         try { // Delete the tempUser
             userRepo.delete(tempUser);
             return "User is deleted succesfully";
         }catch (Exception e){
-            return "User delete failed. " + e.getMessage();
+            throw new DatabaseException("Error when updating the user");
         }
     }
 

@@ -1,6 +1,8 @@
 package org.dasun.service;
 
 import org.dasun.dto.BillDTO;
+import org.dasun.exceptions.DatabaseException;
+import org.dasun.exceptions.InvalidLongException;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ public interface BillService {
      * @param id is the id of the bill that use needs
      * @return a BillDTO that can be used to display the results.
      */
-    public BillDTO getBill(Long id);
+    public BillDTO getBill(Long id) throws InvalidLongException;
 
     /**
      * This method is used to update a bill in the bill repository
@@ -27,19 +29,19 @@ public interface BillService {
      * @param id is the id of the bill that need to be updated
      * @return this will return a string indicating the status of the transaction
      */
-    public String updateBill(BillDTO billDTO, Long id);
+    public String updateBill(BillDTO billDTO, Long id) throws DatabaseException;
 
     /**
      * This method is used to delete a bill in the bill repository
      * @param id is the id of the bill that need to be deleted
      * @return this will return a string indicating the status of the transaction
      */
-    public String deleteBill(Long id);
+    public String deleteBill(Long id) throws DatabaseException;
 
     /**
      * This is used to add a bill to the database
      * @param billDTO is the user input. It will be taken as a billDTO
      * @return this will return a string indicating the status of the transaction
      */
-    public String addBill(BillDTO billDTO);
+    public String addBill(BillDTO billDTO) throws DatabaseException;
 }

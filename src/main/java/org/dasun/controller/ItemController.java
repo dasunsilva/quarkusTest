@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.dasun.dto.ItemDTO;
+import org.dasun.exceptions.DatabaseException;
+import org.dasun.exceptions.InvalidLongException;
 import org.dasun.service.ItemService;
 import org.dasun.service.ItemService;
 
@@ -44,7 +46,11 @@ public class ItemController {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ItemDTO getItem(@PathParam("id") Long id){
-        return itemService.getItem(id);
+        try{
+            return itemService.getItem(id);
+        }catch (InvalidLongException ile){
+            return null;
+        }
     }
 
     /**
@@ -57,7 +63,11 @@ public class ItemController {
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
     public String addItem(@Valid ItemDTO itemDTO) {
-        return itemService.addItem(itemDTO);
+        try {
+            return itemService.addItem(itemDTO);
+        } catch (DatabaseException e) {
+            return e.getMessage();
+        }
     }
 
     /**
@@ -71,7 +81,11 @@ public class ItemController {
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String editItem(@PathParam("id") Long id, @Valid ItemDTO itemDTO){
-        return itemService.updateItem(itemDTO,id);
+        try {
+            return itemService.updateItem(itemDTO,id);
+        } catch (DatabaseException e) {
+            return e.getMessage();
+        }
     }
 
     /**'
@@ -84,6 +98,10 @@ public class ItemController {
     @DELETE
     @Path("remove/{id}")
     public String removeItem(@PathParam("id") Long id) {
-        return itemService.deleteItem(id);
+        try {
+            return itemService.deleteItem(id);
+        } catch (DatabaseException e) {
+            return e.getMessage();
+        }
     }
 }
