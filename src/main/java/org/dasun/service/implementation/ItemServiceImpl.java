@@ -21,6 +21,9 @@ public class ItemServiceImpl implements ItemService {
     @Inject
     ItemDTOMapper itemDTOMapper;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ItemDTO> getAllItems() {
         // Get all items as a list of DTOs
@@ -32,6 +35,9 @@ public class ItemServiceImpl implements ItemService {
         return itemDTOList;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ItemDTO getItem(Long id) {
         // Get item using ID
@@ -39,6 +45,9 @@ public class ItemServiceImpl implements ItemService {
         return itemDTOMapper.mapItemDTO(tempItem);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public String addItem(ItemDTO itemDTO) {
@@ -53,6 +62,9 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public String updateItem(ItemDTO itemDTO, Long id) {
@@ -70,6 +82,9 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public String deleteItem(Long id) {

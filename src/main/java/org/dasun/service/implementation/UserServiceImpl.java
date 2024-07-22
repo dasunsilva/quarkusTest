@@ -24,9 +24,15 @@ public class UserServiceImpl implements UserService {
     @Inject
     UserDTOMapper userDTOMapper;
 
+    /**
+     * This is used to validate a phone number that use inputs
+     */
     private static final String phoneNumberRegex = "^\\+94\\d{9}$";
     private static final Pattern phoneNumberPattern = Pattern.compile(phoneNumberRegex);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<UserDTO> getAllUsers() {
         // Get all users as a list of DTOs
@@ -38,6 +44,9 @@ public class UserServiceImpl implements UserService {
         return userDTOList;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserDTO getUser(Long id) {
         // Get user using ID
@@ -45,6 +54,9 @@ public class UserServiceImpl implements UserService {
         return userDTOMapper.mapUserToDTO(tempUser);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public String addUser(UserDTO userDTO) {
@@ -63,6 +75,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public String updateUser(UserDTO userDTO, Long id) {
@@ -89,6 +104,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public String deleteUser(Long id) {
@@ -101,7 +119,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    // A method to validate the phone number
+    /**
+     * This method will validate the phone number of the user.
+     * @param phoneNumber is the user input
+     * @return this will return a boolean value
+     * true - Phone number is valid
+     * false - Phone number is invalid
+     */
     private boolean phoneNumberValidator(String phoneNumber) {
         if(phoneNumber == null){
             return false;

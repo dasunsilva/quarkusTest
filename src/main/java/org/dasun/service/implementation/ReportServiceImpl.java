@@ -27,6 +27,9 @@ public class ReportServiceImpl implements ReportService {
     @Inject
     UserService userService;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTotalSales() {
         Double totoalSales = billRepo.findAll().stream()
@@ -36,6 +39,9 @@ public class ReportServiceImpl implements ReportService {
         return String.format("Total sales: Rs. %.2f", totoalSales);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ItemDTO> getMaxItem() {
 
@@ -53,6 +59,9 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ItemDTO> getMinItem() {
 
@@ -70,6 +79,9 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAverageSpending() {
         Double averageSales = billRepo.findAll().stream()
@@ -80,6 +92,9 @@ public class ReportServiceImpl implements ReportService {
         return String.format("The average sales is: Rs. %.2f", averageSales);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<UserDTO> getActiveUsers() {
         List<UserDTO> userList = userService.getAllUsers().stream()

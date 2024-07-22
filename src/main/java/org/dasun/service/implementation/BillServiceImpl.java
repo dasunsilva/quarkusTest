@@ -39,6 +39,9 @@ public class BillServiceImpl implements BillService {
     @Inject
     BillItemDTOMapper billItemDTOMapper;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<BillDTO> getAllBills() {
         // Get all bills as a list of DTOs
@@ -51,6 +54,9 @@ public class BillServiceImpl implements BillService {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BillDTO getBill(Long id) {
         // Get bill using ID
@@ -58,6 +64,9 @@ public class BillServiceImpl implements BillService {
         return billDTOMapper.mapBillDTO(tempBill);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public String addBill(BillDTO billDTO) {
@@ -77,6 +86,9 @@ public class BillServiceImpl implements BillService {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public String updateBill(BillDTO billDTO, Long id) {
@@ -108,6 +120,9 @@ public class BillServiceImpl implements BillService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
     public String deleteBill(Long id) {
