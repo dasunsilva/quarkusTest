@@ -45,12 +45,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDTO getItem(Long id) throws InvalidLongException {
         // Get item using ID
-        if(id == null){
-            throw new InvalidLongException("Id can't be empty");
-        }else{
-            Item tempItem = itemRepo.findById(id);
-            return itemDTOMapper.mapItemDTO(tempItem);
-        }
+        Item tempItem = itemRepo.findById(id);
+        return itemDTOMapper.mapItemDTO(tempItem);
     }
 
     /**

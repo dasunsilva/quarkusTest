@@ -21,7 +21,7 @@ public interface BillService {
      * @param id is the id of the bill that use needs
      * @return a BillDTO that can be used to display the results.
      */
-    public BillDTO getBill(Long id) throws InvalidLongException;
+    public BillDTO getBill(Long id);
 
     /**
      * This method is used to update a bill in the bill repository

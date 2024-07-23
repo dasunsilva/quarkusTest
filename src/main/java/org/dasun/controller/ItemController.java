@@ -46,11 +46,7 @@ public class ItemController {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ItemDTO getItem(@PathParam("id") Long id){
-        try{
-            return itemService.getItem(id);
-        }catch (InvalidLongException ile){
-            return null;
-        }
+        return itemService.getItem(id);
     }
 
     /**

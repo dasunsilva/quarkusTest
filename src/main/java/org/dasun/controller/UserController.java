@@ -60,11 +60,7 @@ public class UserController {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public UserDTO getUser(@PathParam("id") Long id){
-        try{
-            return userService.getUser(id);
-        }catch (InvalidLongException ile){
-            return null;
-        }
+        return userService.getUser(id);
     }
 
     /**

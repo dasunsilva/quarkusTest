@@ -65,12 +65,8 @@ public class BillServiceImpl implements BillService {
     @Override
     public BillDTO getBill(Long id) throws InvalidLongException{
         // Get bill using ID
-        if(id == null){
-            throw new InvalidLongException("Id can't be empty");
-        }else{
             Bill tempBill = billRepo.findById(id);
             return billDTOMapper.mapBillDTO(tempBill);
-        }
     }
 
     /**

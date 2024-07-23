@@ -47,12 +47,7 @@ public class BillController {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public BillDTO getBill(@PathParam("id") Long id){
-
-        try{
-            return billService.getBill(id);
-        }catch (InvalidLongException ile){
-            return null;
-        }
+        return billService.getBill(id);
     }
 
     /**

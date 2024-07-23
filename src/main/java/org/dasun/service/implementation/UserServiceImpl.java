@@ -52,12 +52,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUser(Long id) throws InvalidLongException {
         // Get user using ID
-        if(id == null){
-            throw new InvalidLongException("Id can't be empty");
-        }else{
-            User tempUser = userRepo.findById(id);
-            return userDTOMapper.mapUserToDTO(tempUser);
-        }
+        User tempUser = userRepo.findById(id);
+        return userDTOMapper.mapUserToDTO(tempUser);
     }
 
     /**

@@ -23,7 +23,7 @@ public interface UserService {
      * @param id is the id of the user that need to be displayed
      * @return a UserDTO that can be used to display the results.
      */
-    public UserDTO getUser(Long id) throws InvalidLongException;
+    public UserDTO getUser(Long id);
 
     /**
      * This is used to add a user to the database
