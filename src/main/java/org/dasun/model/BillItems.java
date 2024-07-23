@@ -18,7 +18,8 @@ import lombok.ToString;
 public class BillItems {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "bill_items_seq", sequenceName = "bill_items_sequence", allocationSize = 50 )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bill_items_seq")
     private Long id;
     private int quantity;
     private int priceAtPurchase;

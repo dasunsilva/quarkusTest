@@ -22,7 +22,8 @@ import java.util.List;
 public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "item_seq", sequenceName = "item_sequence", allocationSize = 50 )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_seq")
     @Column(name = "item_id")
     private Long id;
 

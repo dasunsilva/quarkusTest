@@ -24,7 +24,8 @@ import java.util.Set;
 public class Bill {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "bill_id_seq", sequenceName = "bills_sequence", allocationSize = 50 )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bill_id_seq")
     @Column(name = "bill_id")
     private Long id;
 
