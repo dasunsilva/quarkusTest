@@ -22,7 +22,6 @@ import java.util.List;
  */
 @RequestScoped
 @Path("items")
-@Authenticated
 public class ItemController {
     /**
      * This is used to get the item service
@@ -37,8 +36,6 @@ public class ItemController {
     @GET
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON)
-    // Public
-    @PermitAll
     public List<ItemDTO> getAllItems(){
         return itemService.getAllItems();
     }
@@ -51,8 +48,6 @@ public class ItemController {
     @GET
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    // Public
-    @PermitAll
     public ItemDTO getItem(@PathParam("id") Long id){
         return itemService.getItem(id);
     }
@@ -66,8 +61,6 @@ public class ItemController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    // Manager
-    @RolesAllowed("manager_role")
     public String addItem(@Valid ItemDTO itemDTO) {
         try {
             return itemService.addItem(itemDTO);
@@ -86,7 +79,6 @@ public class ItemController {
     @PUT
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    // Manager
     @RolesAllowed("manager_role")
     public String editItem(@PathParam("id") Long id, @Valid ItemDTO itemDTO){
         try {
@@ -105,7 +97,6 @@ public class ItemController {
 
     @DELETE
     @Path("remove/{id}")
-    // Manager
     @RolesAllowed("manager_role")
     public String removeItem(@PathParam("id") Long id) {
         try {
