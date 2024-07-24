@@ -1,5 +1,8 @@
 package org.dasun.controller;
 
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -19,6 +22,7 @@ import java.util.List;
  */
 @RequestScoped
 @Path("items")
+@Authenticated
 public class ItemController {
     /**
      * This is used to get the item service
@@ -33,6 +37,8 @@ public class ItemController {
     @GET
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON)
+    // Public
+    @PermitAll
     public List<ItemDTO> getAllItems(){
         return itemService.getAllItems();
     }
@@ -45,6 +51,8 @@ public class ItemController {
     @GET
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    // Public
+    @PermitAll
     public ItemDTO getItem(@PathParam("id") Long id){
         return itemService.getItem(id);
     }
@@ -58,6 +66,8 @@ public class ItemController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
+    // Manager
+    @RolesAllowed("manager_role")
     public String addItem(@Valid ItemDTO itemDTO) {
         try {
             return itemService.addItem(itemDTO);
@@ -76,6 +86,8 @@ public class ItemController {
     @PUT
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    // Manager
+    @RolesAllowed("manager_role")
     public String editItem(@PathParam("id") Long id, @Valid ItemDTO itemDTO){
         try {
             return itemService.updateItem(itemDTO,id);
@@ -93,6 +105,8 @@ public class ItemController {
 
     @DELETE
     @Path("remove/{id}")
+    // Manager
+    @RolesAllowed("manager_role")
     public String removeItem(@PathParam("id") Long id) {
         try {
             return itemService.deleteItem(id);

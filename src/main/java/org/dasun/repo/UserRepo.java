@@ -12,4 +12,5 @@ import java.util.List;
  */
 @ApplicationScoped
 public class UserRepo implements PanacheRepository<User> {
+    //TODO: Fix the id issue when having dummy data
 }

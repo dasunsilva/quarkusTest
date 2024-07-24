@@ -34,6 +34,8 @@ public class BillController {
     @GET
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON)
+    // Manager
+    // Owner, Manager
     public List<BillDTO> getAllBills(){
         return billService.getAllBills();
     }
@@ -46,6 +48,7 @@ public class BillController {
     @GET
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    // Owner, Manager
     public BillDTO getBill(@PathParam("id") Long id){
         return billService.getBill(id);
     }
@@ -59,6 +62,7 @@ public class BillController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
+    // Employee
     public String addBill(BillDTO billDTO) {
         try {
             return billService.addBill(billDTO);
@@ -77,6 +81,7 @@ public class BillController {
     @PUT
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    // Manager
     public String editBill(@PathParam("id") Long id, BillDTO billDTO) {
         try {
             return billService.updateBill(billDTO, id);
@@ -93,6 +98,7 @@ public class BillController {
      */
     @DELETE
     @Path("remove/{id}")
+    // Manager
     public String removeBill(@PathParam("id") Long id) {
         try {
             return billService.deleteBill(id);
