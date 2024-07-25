@@ -13,6 +13,7 @@ import org.dasun.exceptions.DatabaseException;
 import org.dasun.exceptions.InvalidLongException;
 import org.dasun.service.ItemService;
 import org.dasun.service.ItemService;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ import java.util.List;
  */
 @RequestScoped
 @Path("items")
+@SecurityRequirement(name = "Keycloak")
 public class ItemController {
     /**
      * This is used to get the item service

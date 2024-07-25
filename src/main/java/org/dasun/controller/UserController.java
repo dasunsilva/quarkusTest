@@ -9,6 +9,7 @@ import org.dasun.dto.UserDTO;
 import org.dasun.exceptions.DatabaseException;
 import org.dasun.exceptions.InvalidLongException;
 import org.dasun.service.UserService;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ A @Singleton bean is similar to an @ApplicationScoped bean but has a more explic
 
 @RequestScoped
 @Path("users")
+@SecurityRequirement(name = "Keycloak")
 public class UserController {
     /**
      * This is used to get the user service

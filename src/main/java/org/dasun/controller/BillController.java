@@ -10,6 +10,7 @@ import org.dasun.exceptions.DatabaseException;
 import org.dasun.exceptions.InvalidLongException;
 import org.dasun.service.BillService;
 import org.dasun.service.BillService;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @RequestScoped
 @Path("bills")
+@SecurityRequirement(name = "Keycloak")
 public class BillController {
 
     /**

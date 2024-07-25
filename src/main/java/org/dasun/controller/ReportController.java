@@ -11,6 +11,7 @@ import org.dasun.dto.UserDTO;
 import org.dasun.model.Item;
 import org.dasun.service.ReportService;
 import org.dasun.service.implementation.ReportServiceImpl;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import java.util.Map;
  */
 @RequestScoped
 @Path("report")
+@SecurityRequirement(name = "Keycloak")
 public class ReportController {
     /**
      * This is used to get the report service
