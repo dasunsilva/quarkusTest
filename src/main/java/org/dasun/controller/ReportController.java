@@ -35,7 +35,6 @@ public class ReportController {
     @GET
     @Path("total-sales")
     @Produces(MediaType.APPLICATION_JSON)
-    // Manager, Owner
     public String totalSales(){
         return reportService.getTotalSales();
     }
@@ -47,7 +46,6 @@ public class ReportController {
     @GET
     @Path("max-sale-item")
     @Produces(MediaType.APPLICATION_JSON)
-    // Manager, Owner
     public List<ItemDTO> maxItem(){
         return reportService.getMaxItem();
 
@@ -60,7 +58,6 @@ public class ReportController {
     @GET
     @Path("min-sale-item")
     @Produces(MediaType.APPLICATION_JSON)
-    // Manager, Owner
     public List<ItemDTO> minItem(){
         return reportService.getMinItem();
     }
@@ -72,7 +69,6 @@ public class ReportController {
     @GET
     @Path("average-spending")
     @Produces(MediaType.APPLICATION_JSON)
-    // Manager, Owner
     public String averageSpending(){
         return reportService.getAverageSpending();
 
@@ -86,7 +82,6 @@ public class ReportController {
     @GET
     @Path("active-users")
     @Produces(MediaType.APPLICATION_JSON)
-    // Manager, Owner
     public List<UserDTO> activeUsers(){
         return reportService.getActiveUsers();
 
