@@ -47,7 +47,6 @@ public class UserController {
     @GET
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON)
-    // Owner, Manager
     public List<UserDTO> getAllUsers(){
         return userService.getAllUsers();
     }
@@ -60,7 +59,6 @@ public class UserController {
     @GET
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    // Owner, Manager
     public UserDTO getUser(@PathParam("id") Long id){
         return userService.getUser(id);
     }
@@ -74,7 +72,6 @@ public class UserController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    // Manager, Employee
     public String addUser(@Valid UserDTO userDTO) {
         try {
             return userService.addUser(userDTO);
@@ -93,7 +90,6 @@ public class UserController {
     @PUT
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    // Manager
     public String editUser(@PathParam("id") Long id, @Valid UserDTO userDTO){
         try {
             return userService.updateUser(userDTO,id);
@@ -111,7 +107,6 @@ public class UserController {
      */
     @DELETE
     @Path("remove/{id}")
-    // Manager
     public String removeUser(@PathParam("id") Long id) {
         try {
             return userService.deleteUser(id);
