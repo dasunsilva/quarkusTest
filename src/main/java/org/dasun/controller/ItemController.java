@@ -79,7 +79,6 @@ public class ItemController {
     @PUT
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("manager_role")
     public String editItem(@PathParam("id") Long id, @Valid ItemDTO itemDTO){
         try {
             return itemService.updateItem(itemDTO,id);
@@ -97,7 +96,6 @@ public class ItemController {
 
     @DELETE
     @Path("remove/{id}")
-    @RolesAllowed("manager_role")
     public String removeItem(@PathParam("id") Long id) {
         try {
             return itemService.deleteItem(id);
