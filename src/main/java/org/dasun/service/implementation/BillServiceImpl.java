@@ -98,8 +98,6 @@ public class BillServiceImpl implements BillService {
     @Override
     public String updateBill(BillDTO billDTO, Long id) throws DatabaseException{
 
-        // TODO : Find a better implementation for this
-
         Bill existingBill = billRepo.findById(id);
         existingBill.setDate(billDTO.getDate());
         existingBill.setAmount(billDTO.getAmount());

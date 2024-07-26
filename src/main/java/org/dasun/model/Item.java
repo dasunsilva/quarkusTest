@@ -40,7 +40,7 @@ public class Item {
     This holds the information about the bill items.
     Bill item will have bill id, item id, quantitu, price at purchase
      */
-    @OneToMany(mappedBy = "items", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "items", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BillItems> billItems;
 
 }

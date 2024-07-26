@@ -9,6 +9,6 @@ CREATE TABLE public.bills
 );
 
 CREATE SEQUENCE public.bills_sequence
-    START WITH 1
+    START WITH 100
     INCREMENT BY 50;
 

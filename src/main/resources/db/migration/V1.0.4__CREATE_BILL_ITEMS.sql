@@ -1,5 +1,5 @@
 CREATE SEQUENCE public.bill_items_sequence
-    START WITH 1
+    START WITH 100
     INCREMENT BY 50;
 
 CREATE TABLE public.bill_item

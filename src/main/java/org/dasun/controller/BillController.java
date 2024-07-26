@@ -31,7 +31,7 @@ public class BillController {
 
     /**
      * This method is used to get all bill details
-     * @return A list of BillDTO which holds the the details about bills.
+     * @return A list of BillDTO which holds the details about bills.
      */
     @GET
     @Path("get")
@@ -41,7 +41,7 @@ public class BillController {
     }
 
     /**
-     * This metood is used to get the bill using teh bill id
+     * This method is used to get the bill using teh bill id
      * @param id The id of the bill
      * @return This will return a single BillDTO corresponding to the given id
      */
