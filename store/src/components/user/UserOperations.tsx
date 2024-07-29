@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Container, Button } from "react-bootstrap";
-import Axios from "axios";
+import { Container } from "react-bootstrap";
 import { UserInput } from "../../types/UserInput";
-import "../assets/css/AddNewUser.css";
+import "../../assets/css/AddNewUser.css";
 import FormItem from "../form/FromItem";
+import ResetButton from "../button/ResetButton";
+import SubmitButton from "../button/SubmitButton";
 
 function AddNewUser({ edit, remove }: { edit: boolean; remove: boolean }) {
   const [data, setData] = useState<UserInput>({
@@ -20,34 +21,6 @@ function AddNewUser({ edit, remove }: { edit: boolean; remove: boolean }) {
       ...prevData,
       [name]: value,
     }));
-  };
-
-  const submitData = () => {
-    const urlBase: string = "http://localhost:8080/users/";
-
-    Axios.post(urlBase + "add", {
-      name: data.userName,
-      email: data.userEmail,
-      phone: data.userPhone,
-      accountNumber: data.userAccount,
-    })
-      .then((response) => {
-        console.log(response);
-        resetData();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const resetData = () => {
-    setData({
-      userId: "",
-      userName: "",
-      userEmail: "",
-      userPhone: "",
-      userAccount: "",
-    });
   };
 
   return (
@@ -108,16 +81,8 @@ function AddNewUser({ edit, remove }: { edit: boolean; remove: boolean }) {
       )}
 
       <Container className="ButtonContainer">
-        <Button variant="outline-primary" id="btnPrimary" onClick={submitData}>
-          Submit
-        </Button>{" "}
-        <Button
-          variant="outline-secondary"
-          id="btnSecondary"
-          onClick={resetData}
-        >
-          Cancel
-        </Button>{" "}
+        <SubmitButton data={data} isRemove={remove} isEdit={edit} />
+        <ResetButton setData={setData} />
       </Container>
     </>
   );
