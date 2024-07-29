@@ -40,21 +40,6 @@ function SubNavBar({
               as={Button}
               id="navItem"
               onClick={() => {
-                setItem("getOne");
-                setPage({
-                  main: entity,
-                  sub: "getOne" + entity,
-                });
-              }}
-              className={item === "getOne" ? "selected" : ""}
-            >
-              {"Get " + entity + " Information"}
-            </Nav.Item>
-
-            <Nav.Item
-              as={Button}
-              id="navItem"
-              onClick={() => {
                 setItem("add");
                 setPage({
                   main: entity,

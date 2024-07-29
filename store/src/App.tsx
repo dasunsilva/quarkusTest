@@ -4,45 +4,47 @@ import "./assets/css/App.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import MainNavBar from "./components/navBar/MainNavBar";
 import { useState } from "react";
-import UserDataTable from "./components/UserDataTable";
-import ItemDataTable from "./components/ItemDataTable";
-import BillDataTable from "./components/BillDataTable";
+import UserDataTable from "./components/user/UserDataTable";
 import { CurrentPageData } from "./types/CurrentPageData";
+import AddNewUser from "./components/user/UserOperations";
 
 function App() {
   const [page, setPage] = useState<CurrentPageData>({
-    main: "user",
+    main: "User",
     sub: "getAllUser",
   });
 
   return (
     <main className="main">
       <MainNavBar setPageFn={setPage} />
-      <Container id="testContainer">
-        {page.main === "user" && (
+      <Container id="UIContainer">
+        {page.main === "User" && (
           <>
             {page.sub === "getAllUser" && <UserDataTable />}
-            {page.sub === "getOneUser" && "GetOneUser"}
-            {page.sub === "addUser" && "Add User"}
-            {page.sub === "editUser" && "Edit user"}
-            {page.sub === "removeUser" && "Remove user"}
+            {page.sub === "addUser" && (
+              <AddNewUser edit={false} remove={false} />
+            )}
+            {page.sub === "editUser" && (
+              <AddNewUser edit={true} remove={false} />
+            )}
+            {page.sub === "removeUser" && (
+              <AddNewUser edit={false} remove={true} />
+            )}
           </>
         )}
 
-        {page.main === "item" && (
+        {page.main === "Item" && (
           <>
-            {page.sub === "getAllItem" && <ItemDataTable />}
-            {page.sub === "getOneItem" && "GetOneItem"}
+            {page.sub === "getAllItem" && "<ItemDataTable />"}
             {page.sub === "addItem" && "Add Item"}
             {page.sub === "editItem" && "Edit Item"}
             {page.sub === "removeItem" && "Remove Item"}
           </>
         )}
 
-        {page.main === "bill" && (
+        {page.main === "Bill" && (
           <>
-            {page.sub === "getAllBill" && <BillDataTable />}
-            {page.sub === "getOneBill" && "GetOneBill"}
+            {page.sub === "getAllBill" && "<BillDataTable />"}
             {page.sub === "addBill" && "Add Bill"}
             {page.sub === "editBill" && "Edit Bill"}
             {page.sub === "removeBill" && "Remove Bill"}

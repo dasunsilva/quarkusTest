@@ -1,7 +1,8 @@
 import Table from "react-bootstrap/Table";
-import { UserData } from "../types/UserData";
+import { UserData } from "../../types/UserData";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { UserDTO } from "../../types/UserDTO";
 
 function UserDataTable() {
   const [data, setData] = useState<UserData[]>([]);
@@ -15,14 +16,15 @@ function UserDataTable() {
           console.error("Error! Couldn't get data");
           return;
         }
-
-        const users = response.data.map((e: UserData) => ({
-          userId: e.userID,
-          userName: e.userName,
-          userEmail: e.userEmail,
-          userPhone: e.userPhone,
-          billIds: e.userBills,
+        const users = response.data.map((e: UserDTO) => ({
+          userID: e.id,
+          userName: e.name,
+          userEmail: e.email,
+          userPhone: e.phone,
+          userBills: e.billIDs.join(", "),
         }));
+
+        console.log(users);
 
         setData(users);
       } catch (ex) {

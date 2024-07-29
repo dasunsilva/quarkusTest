@@ -1,0 +1,16 @@
+#inputField input {
+  border: 2px solid rgb(78 172 255 / 46%);
+}
+
+.ButtonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  justify-content: center;
+}
+
+#btnPrimary,
+#btnSecondary {
+  width: 8rem;
+  height: 3rem;
+}

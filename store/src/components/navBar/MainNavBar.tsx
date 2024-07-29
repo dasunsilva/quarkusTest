@@ -21,13 +21,13 @@ function MainNavBar({
       <Tab eventKey="userPage" title="User Page">
         <SubNavBar setPage={setPageFn} entity="User" />
       </Tab>
-      <Tab eventKey="itemPage" title="Item Page">
+      <Tab eventKey="itemPage" title="Item Page" disabled>
         <SubNavBar setPage={setPageFn} entity="Item" />
       </Tab>
-      <Tab eventKey="billPage" title="Bill Page">
+      <Tab eventKey="billPage" title="Bill Page" disabled>
         <SubNavBar setPage={setPageFn} entity="Bill" />
       </Tab>
-      <Tab eventKey="reportPage" title="Report Page"></Tab>
+      <Tab eventKey="reportPage" title="Report Page" disabled></Tab>
     </Tabs>
   );
 }
