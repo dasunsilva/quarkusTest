@@ -1,14 +1,12 @@
 import { useState } from "react";
-import "./AddUser.css";
-import "./RemoveUser.css";
+import "./assets/css/AddUser.css";
+import "./assets/css/RemoveUser.css";
 import Axios from "axios";
 import { UserDataWithIDOnly } from "./types/UserDataWithIDOnly";
 
 function User() {
   const urlBase: string = "http://localhost:8080/users/";
-  const [userData, setUserData] = useState<UserDataWithIDOnly>({
-    uID: "",
-  });
+  const [userData, setUserData] = useState<UserDataWithIDOnly>({ uID: "" });
 
   const handleFormInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -23,18 +21,19 @@ function User() {
     console.log("Form submitted with data:", userData);
 
     Axios.delete(urlBase + "remove/" + userData.uID)
-      .then(function (response) {
-        console.log(response);
+      .then((response) => {
+        console.log("Delete successful:", response);
+        setUserData({ uID: "" });
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((error) => {
+        console.error("Error occurred while deleting:", error);
       });
   };
 
   return (
     <div className="formContainer removeUser">
-      <form className="formGetUser" onSubmit={handleSubmit}>
-        <div className="formGroup">
+      <form className="formGetUser formGetUserID" onSubmit={handleSubmit}>
+        <div className="formGroup idColumn">
           <label htmlFor="userName" className="formLabel">
             User ID
           </label>

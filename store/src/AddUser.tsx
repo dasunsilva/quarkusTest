@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./AddUser.css";
+import "./assets/css/AddUser.css";
 import Axios from "axios";
 import { UserData } from "./types/UserData";
 

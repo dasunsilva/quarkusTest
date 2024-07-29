@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
             userRepo.delete(tempUser);
             return "User is deleted succesfully";
         }catch (Exception e){
-            throw new DatabaseException("Error when updating the user");
+            throw new DatabaseException("Error when deleting the user");
         }
     }
 

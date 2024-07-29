@@ -1,6 +1,6 @@
 import { useState } from "react";
-import "./AddUser.css";
-import "./EditUser.css";
+import "./assets/css/AddUser.css";
+import "./assets/css/EditUser.css";
 import Axios from "axios";
 import { UserDataWithIDAcc } from "./types/UserDataWithIDAcc";
 
@@ -35,6 +35,13 @@ function User() {
     })
       .then(function (response) {
         console.log(response);
+        setUserData({
+          uID: "",
+          uName: "",
+          uEmail: "",
+          uPhone: "",
+          uAccount: "",
+        });
       })
       .catch(function (error) {
         console.log(error);

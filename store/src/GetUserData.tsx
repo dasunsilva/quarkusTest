@@ -1,6 +1,6 @@
 import { useState } from "react";
-import "./AddUser.css";
-import "./GetUserData.css";
+import "./assets/css/AddUser.css";
+import "./assets/css/GetUserData.css";
 import Axios from "axios";
 import { UserDataWithID } from "./types/UserDataWithID.ts";
 

@@ -1,6 +1,6 @@
-import "./App.css";
+import "./assets/css/App.css";
 import UserHome from "./UserHome";
-import "./UserHome.css";
+import "./assets/css/UserHome.css";
 
 function App() {
   return (
