@@ -2,18 +2,18 @@ import Table from "react-bootstrap/Table";
 // import { UserData } from "../types/UserData";
 // import { useState } from "react";
 
-function DataTable() {
+function UserDataTable() {
   // const [data, setData] = useState<UserData>();
 
   return (
     <Table striped>
       <thead>
         <tr>
+          <th>Bill ID</th>
+          <th>Bill Date</th>
+          <th>Bill Amount</th>
           <th>User ID</th>
-          <th>User Name</th>
-          <th>Phone Number</th>
-          <th>Email</th>
-          <th>Bill IDs</th>
+          <th>Item IDs</th>
         </tr>
       </thead>
       <tbody>
@@ -43,4 +43,4 @@ function DataTable() {
   );
 }
 
-export default DataTable;
+export default UserDataTable;

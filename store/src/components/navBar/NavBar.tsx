@@ -4,13 +4,14 @@ import Navbar from "react-bootstrap/Navbar";
 import "../../assets/css/navBar/navBar.css";
 import { Button } from "react-bootstrap";
 import { useState } from "react";
+import { CurrentPageData } from "../../types/CurrentPageData";
 
 function SubNavBar({
   entity,
   setPage,
 }: {
   entity: string;
-  setPage: (args: string) => void;
+  setPage: (args: CurrentPageData) => void;
 }) {
   const [item, setItem] = useState<string>("getAll");
 
@@ -18,14 +19,17 @@ function SubNavBar({
     <>
       <Navbar bg="dark" data-bs-theme="dark" expanded>
         <Container fluid>
-          <Navbar.Brand>User</Navbar.Brand>
+          <Navbar.Brand>{entity}</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Item
               as={Button}
               id="navItem"
               onClick={() => {
                 setItem("getAll");
-                setPage("getUsers");
+                setPage({
+                  main: entity,
+                  sub: "getAll" + entity,
+                });
               }}
               className={item === "getAll" ? "selected" : ""}
             >
@@ -37,7 +41,10 @@ function SubNavBar({
               id="navItem"
               onClick={() => {
                 setItem("getOne");
-                setPage("getOneUser");
+                setPage({
+                  main: entity,
+                  sub: "getOne" + entity,
+                });
               }}
               className={item === "getOne" ? "selected" : ""}
             >
@@ -49,7 +56,10 @@ function SubNavBar({
               id="navItem"
               onClick={() => {
                 setItem("add");
-                setPage("addUser");
+                setPage({
+                  main: entity,
+                  sub: "add" + entity,
+                });
               }}
               className={item === "add" ? "selected" : ""}
             >
@@ -61,7 +71,10 @@ function SubNavBar({
               id="navItem"
               onClick={() => {
                 setItem("edit");
-                setPage("editUser");
+                setPage({
+                  main: entity,
+                  sub: "edit" + entity,
+                });
               }}
               className={item === "edit" ? "selected" : ""}
             >
@@ -73,7 +86,10 @@ function SubNavBar({
               id="navItem"
               onClick={() => {
                 setItem("remove");
-                setPage("removeUser");
+                setPage({
+                  main: entity,
+                  sub: "remove" + entity,
+                });
               }}
               className={item === "remove" ? "selected" : ""}
             >

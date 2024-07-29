@@ -2,8 +2,13 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import "../../assets/css/navBar/mainNavBar.css";
 import SubNavBar from "./NavBar";
+import { CurrentPageData } from "../../types/CurrentPageData";
 
-function MainNavBar({ setPageFn }: { setPageFn: (arg: string) => void }) {
+function MainNavBar({
+  setPageFn,
+}: {
+  setPageFn: (arg: CurrentPageData) => void;
+}) {
   return (
     <Tabs
       defaultActiveKey="userPage"
