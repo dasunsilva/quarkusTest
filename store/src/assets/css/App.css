@@ -1,7 +1,11 @@
-main {
-  padding: 1rem;
+.main {
+  min-height: 100vh;
+}
+
+#testContainer {
+  background-color: rebeccapurple;
+  padding: 3rem 1rem;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }

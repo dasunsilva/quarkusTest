@@ -13,10 +13,12 @@
   grid-template-rows: repeat(4, 1fr);
   row-gap: 1rem;
 }
+
 .formGroup {
   display: grid;
   grid-template-columns: 5fr 1fr 10fr;
 }
+
 .formLabel {
   grid-column: 1 / span 1;
   display: flex;
