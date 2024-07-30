@@ -34,7 +34,7 @@ A @Singleton bean is similar to an @ApplicationScoped bean but has a more explic
 
 @RequestScoped
 @Path("users")
-//@SecurityRequirement(name = "Keycloak")
+@SecurityRequirement(name = "Keycloak")
 public class UserController {
     /**
      * This is used to get the user service

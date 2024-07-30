@@ -4,14 +4,22 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { UserDTO } from "../../types/UserDTO";
 import { Container } from "react-bootstrap";
+import keycloak from "../../services/keycloak";
 
 function UserDataTable() {
   const [data, setData] = useState<UserData[]>([]);
 
+  const header = {
+    accept: "application/json",
+    authorization: `Bearer ${keycloak.token}`,
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/users/get");
+        const response = await axios.get("http://localhost:8080/users/get", {
+          headers: header,
+        });
 
         if (response.status !== 200) {
           console.error("Error! Couldn't get data");

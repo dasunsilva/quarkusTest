@@ -12,6 +12,8 @@
   "dependencies": {
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
+    "keycloak-js": "^25.0.2",
+    "keycloak-react-web": "^0.1.19",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.3.1",

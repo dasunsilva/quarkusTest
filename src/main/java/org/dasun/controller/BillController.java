@@ -41,7 +41,7 @@ public class BillController {
     }
 
     /**
-     * This method is used to get the bill using teh bill id
+     * This methxod is used to get the bill using teh bill id
      * @param id The id of the bill
      * @return This will return a single BillDTO corresponding to the given id
      */

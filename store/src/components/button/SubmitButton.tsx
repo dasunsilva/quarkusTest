@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import axiosInstance from "../../axios/Axios";
 import { UserInput } from "../../types/UserInput";
+import keycloak from "../../services/keycloak";
 
 export default function SubmitButton({
   data,
@@ -16,27 +17,46 @@ export default function SubmitButton({
   const submitData = async () => {
     console.log("Submit data:", data);
 
+    const header = {
+      accept: "application/json",
+      authorization: `Bearer ${keycloak.token}`,
+    };
+
     try {
       let response;
 
       if (isRemove) {
-        response = await axiosInstance.delete(`/users/remove/${data.userId}`);
-      } else if (isEdit) {
-        response = await axiosInstance.put(`/users/edit/${data.userId}`, {
-          id: data.userId,
-          name: data.userName,
-          email: data.userEmail,
-          phone: data.userPhone,
-          accountNumber: data.userAccount,
+        response = await axiosInstance.delete(`/users/remove/${data.userId}`, {
+          headers: header,
         });
+      } else if (isEdit) {
+        response = await axiosInstance.put(
+          `/users/edit/${data.userId}`,
+          {
+            id: data.userId,
+            name: data.userName,
+            email: data.userEmail,
+            phone: data.userPhone,
+            accountNumber: data.userAccount,
+          },
+          {
+            headers: header,
+          }
+        );
       } else {
         console.log(data);
-        response = await axiosInstance.post("/users/add", {
-          name: data.userName,
-          email: data.userEmail,
-          phone: data.userPhone,
-          accountNumber: data.userAccount,
-        });
+        response = await axiosInstance.post(
+          "/users/add",
+          {
+            name: data.userName,
+            email: data.userEmail,
+            phone: data.userPhone,
+            accountNumber: data.userAccount,
+          },
+          {
+            headers: header,
+          }
+        );
       }
 
       console.log(response);
