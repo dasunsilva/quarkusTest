@@ -2,13 +2,8 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import "../../assets/css/navBar/mainNavBar.css";
 import SubNavBar from "./NavBar";
-import { CurrentPageData } from "../../types/CurrentPageData";
 
-function MainNavBar({
-  setPageFn,
-}: {
-  setPageFn: (arg: CurrentPageData) => void;
-}) {
+function MainNavBar() {
   return (
     <Tabs
       defaultActiveKey="userPage"
@@ -19,13 +14,13 @@ function MainNavBar({
       fill
     >
       <Tab eventKey="userPage" title="User Page">
-        <SubNavBar setPage={setPageFn} entity="User" />
+        <SubNavBar entity="User" />
       </Tab>
       <Tab eventKey="itemPage" title="Item Page" disabled>
-        <SubNavBar setPage={setPageFn} entity="Item" />
+        <SubNavBar entity="Item" />
       </Tab>
       <Tab eventKey="billPage" title="Bill Page" disabled>
-        <SubNavBar setPage={setPageFn} entity="Bill" />
+        <SubNavBar entity="Bill" />
       </Tab>
       <Tab eventKey="reportPage" title="Report Page" disabled></Tab>
     </Tabs>

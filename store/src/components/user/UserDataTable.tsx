@@ -3,6 +3,7 @@ import { UserData } from "../../types/UserData";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { UserDTO } from "../../types/UserDTO";
+import { Container } from "react-bootstrap";
 
 function UserDataTable() {
   const [data, setData] = useState<UserData[]>([]);
@@ -36,28 +37,30 @@ function UserDataTable() {
   }, []);
 
   return (
-    <Table striped>
-      <thead>
-        <tr>
-          <th>User ID</th>
-          <th>User Name</th>
-          <th>Phone Number</th>
-          <th>Email</th>
-          <th>Bill IDs</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((user) => (
-          <tr key={user.userID}>
-            <td>{user.userID}</td>
-            <td>{user.userName}</td>
-            <td>{user.userPhone}</td>
-            <td>{user.userEmail}</td>
-            <td>{user.userBills}</td>
+    <Container id="UIContainer">
+      <Table striped>
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>User Name</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Bill IDs</th>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {data.map((user) => (
+            <tr key={user.userID}>
+              <td>{user.userID}</td>
+              <td>{user.userName}</td>
+              <td>{user.userPhone}</td>
+              <td>{user.userEmail}</td>
+              <td>{user.userBills}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </Container>
   );
 }
 

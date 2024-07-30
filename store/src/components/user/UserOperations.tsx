@@ -24,7 +24,7 @@ function AddNewUser({ edit, remove }: { edit: boolean; remove: boolean }) {
   };
 
   return (
-    <>
+    <Container id="UIContainer">
       {!remove && edit && (
         <FormItem
           label="User ID"
@@ -89,7 +89,7 @@ function AddNewUser({ edit, remove }: { edit: boolean; remove: boolean }) {
         />
         <ResetButton setData={setData} />
       </Container>
-    </>
+    </Container>
   );
 }
 
