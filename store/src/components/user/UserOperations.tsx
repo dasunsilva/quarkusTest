@@ -81,7 +81,12 @@ function AddNewUser({ edit, remove }: { edit: boolean; remove: boolean }) {
       )}
 
       <Container className="ButtonContainer">
-        <SubmitButton data={data} isRemove={remove} isEdit={edit} />
+        <SubmitButton
+          data={data}
+          setData={setData}
+          isRemove={remove}
+          isEdit={edit}
+        />
         <ResetButton setData={setData} />
       </Container>
     </>

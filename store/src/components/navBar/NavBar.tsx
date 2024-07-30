@@ -2,9 +2,9 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "../../assets/css/navBar/navBar.css";
-import { Button } from "react-bootstrap";
 import { useState } from "react";
 import { CurrentPageData } from "../../types/CurrentPageData";
+import { Link } from "react-router-dom";
 
 function SubNavBar({
   entity,
@@ -22,7 +22,8 @@ function SubNavBar({
           <Navbar.Brand>{entity}</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Item
-              as={Button}
+              as={Link}
+              to="/get"
               id="navItem"
               onClick={() => {
                 setItem("getAll");
@@ -37,7 +38,8 @@ function SubNavBar({
             </Nav.Item>
 
             <Nav.Item
-              as={Button}
+              as={Link}
+              to="/add"
               id="navItem"
               onClick={() => {
                 setItem("add");
@@ -52,7 +54,8 @@ function SubNavBar({
             </Nav.Item>
 
             <Nav.Item
-              as={Button}
+              as={Link}
+              to="/edit"
               id="navItem"
               onClick={() => {
                 setItem("edit");
@@ -67,7 +70,8 @@ function SubNavBar({
             </Nav.Item>
 
             <Nav.Item
-              as={Button}
+              as={Link}
+              to="/remove"
               id="navItem"
               onClick={() => {
                 setItem("remove");
