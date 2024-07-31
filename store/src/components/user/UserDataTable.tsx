@@ -1,48 +1,51 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { UserData } from "../../types/UserData";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { UserDTO } from "../../types/UserDTO";
-import { Container } from "react-bootstrap";
-import keycloak from "../../services/keycloak";
+import useKeycloakContext from "../../services/userKeycloakContext";
 
 function UserDataTable() {
+  const { keycloakItem } = useKeycloakContext();
   const [data, setData] = useState<UserData[]>([]);
-
-  const header = {
-    accept: "application/json",
-    authorization: `Bearer ${keycloak.token}`,
-  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/users/get", {
-          headers: header,
-        });
+        if (keycloakItem && keycloakItem.token) {
+          const response = await axios.get("http://localhost:8080/users/get", {
+            headers: {
+              accept: "application/json",
+              authorization: `Bearer ${keycloakItem.token}`,
+            },
+          });
 
-        if (response.status !== 200) {
-          console.error("Error! Couldn't get data");
-          return;
+          if (response.status !== 200) {
+            console.error("Error! Couldn't get data");
+            return;
+          }
+          const users = response.data.map((e: UserDTO) => ({
+            userID: e.id,
+            userName: e.name,
+            userEmail: e.email,
+            userPhone: e.phone,
+            userBills: e.billIDs.join(", "),
+          }));
+
+          console.log(users);
+
+          setData(users);
+        } else {
+          console.error("No Keycloak token available");
         }
-        const users = response.data.map((e: UserDTO) => ({
-          userID: e.id,
-          userName: e.name,
-          userEmail: e.email,
-          userPhone: e.phone,
-          userBills: e.billIDs.join(", "),
-        }));
-
-        console.log(users);
-
-        setData(users);
       } catch (ex) {
         console.error(ex);
       }
     };
 
     fetchData();
-  }, []);
+  }, [keycloakItem]);
 
   return (
     <Container id="UIContainer">

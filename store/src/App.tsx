@@ -3,15 +3,16 @@ import "./assets/css/App.css";
 import MainNavBar from "./components/navBar/MainNavBar";
 import UserDataTable from "./components/user/UserDataTable";
 import AddNewUser from "./components/user/UserOperations";
-import { ReactKeycloakProvider } from "@react-keycloak/web";
-import keycloak from "./services/keycloak";
+import KeycloakInstance from "./services/KeycloakInstance";
+import KeyclockProvider from "./services/KeycloakProvider";
 
 function App() {
   return (
     <main className="main">
-      <ReactKeycloakProvider authClient={keycloak}>
-        <Router>
-          <MainNavBar />
+      <Router>
+        <MainNavBar />
+        <KeyclockProvider>
+          <KeycloakInstance />
           <Routes>
             <Route path="/users">
               <Route index path="/users/get" element={<UserDataTable />} />
@@ -29,8 +30,8 @@ function App() {
               />
             </Route>
           </Routes>
-        </Router>
-      </ReactKeycloakProvider>
+        </KeyclockProvider>
+      </Router>
     </main>
   );
 }

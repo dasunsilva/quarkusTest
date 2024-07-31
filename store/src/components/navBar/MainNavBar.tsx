@@ -2,8 +2,15 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import "../../assets/css/navBar/mainNavBar.css";
 import SubNavBar from "./NavBar";
+// import useKeycloakContext from "../../services/userKeycloakContext";
 
 function MainNavBar() {
+  // const { keycloakItem } = useKeycloakContext();
+
+  const logout = () => {
+    console.log("Test");
+  };
+
   return (
     <Tabs
       defaultActiveKey="userPage"
@@ -23,6 +30,7 @@ function MainNavBar() {
         <SubNavBar entity="Bill" />
       </Tab>
       <Tab eventKey="reportPage" title="Report Page" disabled></Tab>
+      <Tab title="Log Out" onClick={logout}></Tab>
     </Tabs>
   );
 }
