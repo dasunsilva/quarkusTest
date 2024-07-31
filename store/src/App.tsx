@@ -10,8 +10,8 @@ function App() {
   return (
     <main className="main">
       <Router>
-        <MainNavBar />
         <KeyclockProvider>
+          <MainNavBar />
           <KeycloakInstance />
           <Routes>
             <Route path="/users">

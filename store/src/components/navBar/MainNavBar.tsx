@@ -2,13 +2,11 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import "../../assets/css/navBar/mainNavBar.css";
 import SubNavBar from "./NavBar";
-// import useKeycloakContext from "../../services/userKeycloakContext";
+import { Button } from "react-bootstrap";
 
 function MainNavBar() {
-  // const { keycloakItem } = useKeycloakContext();
-
   const logout = () => {
-    console.log("Test");
+    console.log("test");
   };
 
   return (
@@ -30,7 +28,11 @@ function MainNavBar() {
         <SubNavBar entity="Bill" />
       </Tab>
       <Tab eventKey="reportPage" title="Report Page" disabled></Tab>
-      <Tab title="Log Out" onClick={logout}></Tab>
+      <Tab eventKey="logout" title="Log Out">
+        <Button variant="outline-primary" onClick={logout}>
+          Log Out
+        </Button>
+      </Tab>
     </Tabs>
   );
 }
