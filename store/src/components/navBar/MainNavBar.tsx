@@ -2,13 +2,8 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import "../../assets/css/navBar/mainNavBar.css";
 import SubNavBar from "./NavBar";
-import { Button } from "react-bootstrap";
 
 function MainNavBar() {
-  const logout = () => {
-    console.log("test");
-  };
-
   return (
     <Tabs
       defaultActiveKey="userPage"
@@ -28,11 +23,6 @@ function MainNavBar() {
         <SubNavBar entity="Bill" />
       </Tab>
       <Tab eventKey="reportPage" title="Report Page" disabled></Tab>
-      <Tab eventKey="logout" title="Log Out">
-        <Button variant="outline-primary" onClick={logout}>
-          Log Out
-        </Button>
-      </Tab>
     </Tabs>
   );
 }

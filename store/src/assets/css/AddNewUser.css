@@ -14,3 +14,15 @@
   width: 8rem;
   height: 3rem;
 }
+
+#logoutBtnContainer {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: right;
+}
+
+#logoutBtn {
+  padding: 0.5rem 1.5rem;
+}

@@ -4,7 +4,7 @@ import { Container } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { UserData } from "../../types/UserData";
 import { UserDTO } from "../../types/UserDTO";
-import useKeycloakContext from "../../services/userKeycloakContext";
+import useKeycloakContext from "../../services/useKeycloakContext";
 
 function UserDataTable() {
   const { keycloakItem } = useKeycloakContext();

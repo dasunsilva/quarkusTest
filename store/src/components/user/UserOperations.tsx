@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { Container } from "react-bootstrap";
-import { UserInput } from "../../types/UserInput";
+import { Button, Container } from "react-bootstrap";
 import "../../assets/css/AddNewUser.css";
-import FormItem from "../form/FromItem";
+import { UserInput } from "../../types/UserInput";
 import ResetButton from "../button/ResetButton";
 import SubmitButton from "../button/SubmitButton";
+import FormItem from "../form/FromItem";
+import useKeycloakContext from "../../services/useKeycloakContext";
 
 function AddNewUser({ edit, remove }: { edit: boolean; remove: boolean }) {
+  const { keycloakItem } = useKeycloakContext();
+
   const [data, setData] = useState<UserInput>({
     userId: "",
     userName: "",
@@ -21,6 +24,12 @@ function AddNewUser({ edit, remove }: { edit: boolean; remove: boolean }) {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const logout = () => {
+    if (keycloakItem) {
+      keycloakItem.logout();
+    }
   };
 
   return (
@@ -88,6 +97,11 @@ function AddNewUser({ edit, remove }: { edit: boolean; remove: boolean }) {
           isEdit={edit}
         />
         <ResetButton setData={setData} />
+      </Container>
+      <Container id="logoutBtnContainer">
+        <Button id="logoutBtn" onClick={logout}>
+          Logout
+        </Button>
       </Container>
     </Container>
   );
