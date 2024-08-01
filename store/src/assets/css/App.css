@@ -3,6 +3,7 @@
 }
 
 #UIContainer {
+  min-height: 100vh;
   padding: 3rem 1rem;
   display: flex;
   justify-content: center;

@@ -5,6 +5,7 @@ import Table from "react-bootstrap/Table";
 import { UserData } from "../../types/UserData";
 import { UserDTO } from "../../types/UserDTO";
 import useKeycloakContext from "../../services/useKeycloakContext";
+import LogoutButton from "../button/LogoutButton";
 
 function UserDataTable() {
   const { keycloakItem } = useKeycloakContext();
@@ -14,6 +15,14 @@ function UserDataTable() {
     const fetchData = async () => {
       try {
         if (keycloakItem && keycloakItem.token) {
+          if (keycloakItem.isTokenExpired()) {
+            try {
+              const refreshed = await keycloakItem.updateToken(5);
+              console.log(refreshed ? "Token was refreshed" : "Token is valid");
+            } catch (error) {
+              console.error("Failed to refresh the token:", error);
+            }
+          }
           const response = await axios.get("http://localhost:8080/users/get", {
             headers: {
               accept: "application/json",
@@ -37,7 +46,7 @@ function UserDataTable() {
 
           setData(users);
         } else {
-          console.error("No Keycloak token available");
+          console.log("No Keycloak token available");
         }
       } catch (ex) {
         console.error(ex);
@@ -48,30 +57,33 @@ function UserDataTable() {
   }, [keycloakItem]);
 
   return (
-    <Container id="UIContainer">
-      <Table striped>
-        <thead>
-          <tr>
-            <th>User ID</th>
-            <th>User Name</th>
-            <th>Phone Number</th>
-            <th>Email</th>
-            <th>Bill IDs</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((user) => (
-            <tr key={user.userID}>
-              <td>{user.userID}</td>
-              <td>{user.userName}</td>
-              <td>{user.userPhone}</td>
-              <td>{user.userEmail}</td>
-              <td>{user.userBills}</td>
+    <>
+      <Container id="UIContainer">
+        <Table striped>
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>User Name</th>
+              <th>Phone Number</th>
+              <th>Email</th>
+              <th>Bill IDs</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-    </Container>
+          </thead>
+          <tbody>
+            {data.map((user) => (
+              <tr key={user.userID}>
+                <td>{user.userID}</td>
+                <td>{user.userName}</td>
+                <td>{user.userPhone}</td>
+                <td>{user.userEmail}</td>
+                <td>{user.userBills}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Container>
+      <LogoutButton />
+    </>
   );
 }
 

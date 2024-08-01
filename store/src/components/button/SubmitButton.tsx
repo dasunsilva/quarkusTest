@@ -20,6 +20,15 @@ export default function SubmitButton({
     console.log("Submit data:", data);
 
     if (keycloakItem && keycloakItem.token) {
+      if (keycloakItem.isTokenExpired()) {
+        try {
+          const refreshed = await keycloakItem.updateToken(5);
+          console.log(refreshed ? "Token was refreshed" : "Token is valid");
+        } catch (error) {
+          console.error("Failed to refresh the token:", error);
+        }
+      }
+
       const header = {
         accept: "application/json",
         authorization: `Bearer ${keycloakItem.token}`,
