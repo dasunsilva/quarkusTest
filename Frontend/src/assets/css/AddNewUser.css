@@ -1,0 +1,29 @@
+#inputField input {
+  border: 2px solid rgb(78 172 255 / 46%);
+}
+
+.ButtonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  justify-content: center;
+}
+
+#btnPrimary,
+#btnSecondary {
+  width: 8rem;
+  height: 3rem;
+}
+
+#logoutBtnContainer {
+  justify-self: right;
+  align-self: flex-end;
+  display: flex;
+  justify-content: right;
+  margin-bottom: 2rem;
+  margin-right: 1rem;
+}
+
+#logoutBtn {
+  padding: 0.5rem 1.5rem;
+}

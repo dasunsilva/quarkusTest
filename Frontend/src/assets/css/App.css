@@ -1,0 +1,13 @@
+.main {
+  min-height: 100vh;
+}
+
+#UIContainer {
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  width: 50%;
+  flex-direction: column;
+}
