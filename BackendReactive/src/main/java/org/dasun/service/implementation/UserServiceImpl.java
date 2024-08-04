@@ -1,21 +1,20 @@
 package org.dasun.service.implementation;
 
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-import org.dasun.dto.mappers.UserDTOMapper;
-import org.dasun.exceptions.DatabaseException;
-import org.dasun.exceptions.InvalidLongException;
-import org.dasun.exceptions.InvalidPhoneNumberException;
-import org.dasun.model.User;
 import org.dasun.dto.UserDTO;
+import org.dasun.dto.mappers.UserDTOMapper;
+import org.dasun.events.eventProducer.UserEventProducer;
+import org.dasun.model.User;
 import org.dasun.repo.UserRepo;
 import org.dasun.service.UserService;
+import org.hibernate.reactive.mutiny.Mutiny;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
@@ -25,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     UserDTOMapper userDTOMapper;
+    @Inject
+    UserEventProducer userEventProducer;
+
 
     /**
      * This is used to validate a phone number that use inputs
@@ -36,104 +38,112 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public List<UserDTO> getAllUsers() {
+    public Uni<List<UserDTO>> getAllUsers() {
         // Get all users as a list of DTOs
-        List<User> tempUser = userRepo.listAll();
-        List<UserDTO> userDTOList = new ArrayList<>();
-        for (User user : tempUser) {
-            userDTOList.add(userDTOMapper.mapUserToDTO(user));
-        }
-        return userDTOList;
+        return userRepo.getAllUsers()
+                        .onItem()
+                        .transform(userList ->
+                                userList.stream()
+                                        .map(userDTOMapper::mapUserToDTO)
+                                        .collect(Collectors.toList()))
+                        .onFailure()
+                        .invoke(error -> System.out.println(error.getMessage()));
+
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public UserDTO getUser(Long id) throws InvalidLongException {
-        // Get user using ID
-        User tempUser = userRepo.findById(id);
-        return userDTOMapper.mapUserToDTO(tempUser);
+    public Uni<UserDTO> getUser(Long id) {
+        return userRepo.getUserById(id)
+                .onItem().transform(userDTOMapper::mapUserToDTO)
+                .onFailure().transform(error -> new Exception("Error fetching user information" + error.getMessage()));
     }
 
     /**
      * {@inheritDoc}
      */
-    @Transactional
     @Override
-    public String addUser(UserDTO userDTO) throws DatabaseException, InvalidPhoneNumberException {
-        // To validate the phone number
-        if(phoneNumberValidator(userDTO.getPhone())){
-            // Create a user using DTO given
-            User tempUser = userDTOMapper.mapDTOtoUser(userDTO);
-            try { // Save the user
-                userRepo.persist(tempUser);
-                return "User is added succesfully";
-            }catch (Exception e){
-                throw new DatabaseException("Error when adding the user");
-            }
-        }else{
-            throw new InvalidPhoneNumberException();
-        }
+    public Uni<String> addUser(UserDTO userDTO) {
+        return phoneNumberValidator(userDTO.getPhone())
+                .flatMap(isCorrect -> {
+                    if(isCorrect){
+                        User tempUser = userDTOMapper.mapDTOtoUser(userDTO);
+                        return userRepo.addUser(tempUser)
+                                .onItem().transformToUni( item -> {
+                                    userEventProducer.setUserDTO(userDTO);
+                                    userEventProducer.setEvent("Add");
+                                    userEventProducer.publishUserEvent();
+                                    return Uni.createFrom().item("User is added successfully");
+                                })
+                                .onFailure().transform(error ->
+                                        new Exception("Error when adding a new user " + error.getMessage()));
+                    }
+                    else{
+                        return Uni.createFrom()
+                                .failure(new Exception("Please enter a valid mobile number in the format +94xxxxxxxxx"));
+                    }
+                });
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
-    public String updateUser(UserDTO userDTO, Long id) throws DatabaseException, InvalidPhoneNumberException {
-        // To validate the phone number
-        if(phoneNumberValidator(userDTO.getPhone())){
-            // Temp user will be the user input
-            User tempUser = userDTOMapper.mapDTOtoUser(userDTO);
-
-            // We fetch the user using id, and update the old user using the temp user
-            User newUser = userRepo.findById(id);
-            newUser.setName(tempUser.getName());
-            newUser.setEmail(tempUser.getEmail());
-            newUser.setPhoneNumber(tempUser.getPhoneNumber());
-            newUser.setAccountNumber(tempUser.getAccountNumber());
-
-            try{ // Save the new user aka update
-                userRepo.persist(newUser);
-                return "User is updated succesfully";
-            }catch (Exception e){
-                throw new DatabaseException("Error when updating the user");
-            }
-        }else{
-            throw new InvalidPhoneNumberException();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
-    public String deleteUser(Long id) throws DatabaseException {
-        User tempUser = userRepo.findById(id);
-        try { // Delete the tempUser
-            userRepo.delete(tempUser);
-            return "User is deleted succesfully";
-        }catch (Exception e){
-            throw new DatabaseException("Error when deleting the user");
-        }
-    }
-
-    /**
-     * This method will validate the phone number of the user.
-     * @param phoneNumber is the user input
-     * @return this will return a boolean value
-     * true - Phone number is valid
-     * false - Phone number is invalid
-     */
-    private boolean phoneNumberValidator(String phoneNumber) {
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Transactional
+//    @Override
+//    public String updateUser(UserDTO userDTO, Long id) throws DatabaseException, InvalidPhoneNumberException {
+//        // To validate the phone number
+//        if(phoneNumberValidator(userDTO.getPhone())){
+//            // Temp user will be the user input
+//            User tempUser = userDTOMapper.mapDTOtoUser(userDTO);
+//
+//            // We fetch the user using id, and update the old user using the temp user
+//            User newUser = userRepo.findById(id);
+//            newUser.setName(tempUser.getName());
+//            newUser.setEmail(tempUser.getEmail());
+//            newUser.setPhoneNumber(tempUser.getPhoneNumber());
+//            newUser.setAccountNumber(tempUser.getAccountNumber());
+//
+//            try{ // Save the new user aka update
+//                userRepo.persist(newUser);
+//                return "User is updated succesfully";
+//            }catch (Exception e){
+//                throw new DatabaseException("Error when updating the user");
+//            }
+//        }else{
+//            throw new InvalidPhoneNumberException();
+//        }
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Transactional
+//    @Override
+//    public String deleteUser(Long id) throws DatabaseException {
+//        User tempUser = userRepo.findById(id);
+//        try { // Delete the tempUser
+//            userRepo.delete(tempUser);
+//            return "User is deleted succesfully";
+//        }catch (Exception e){
+//            throw new DatabaseException("Error when deleting the user");
+//        }
+//    }
+//
+//    /**
+//     * This method will validate the phone number of the user.
+//     * @param phoneNumber is the user input
+//     * @return this will return a boolean value
+//     * true - Phone number is valid
+//     * false - Phone number is invalid
+//     */
+    private Uni<Boolean> phoneNumberValidator(String phoneNumber) {
         if(phoneNumber == null){
-            return false;
+            return Uni.createFrom().item(false);
         }
         // Match regex
         Matcher matcher = phoneNumberPattern.matcher(phoneNumber);
-        return matcher.matches();
+        return Uni.createFrom().item(matcher.matches());
     }
 }

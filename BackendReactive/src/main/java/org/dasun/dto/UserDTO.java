@@ -2,12 +2,10 @@ package org.dasun.dto;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.dasun.model.Bill;
+
 import java.util.List;
 
 /**

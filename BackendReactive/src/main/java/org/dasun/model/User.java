@@ -1,11 +1,9 @@
 package org.dasun.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.Comment;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -13,9 +11,9 @@ import java.util.List;
  * This is the User class
  * This defines the fields that are in a User object
  */
+
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "users")
 public class User {

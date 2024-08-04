@@ -73,16 +73,8 @@
             <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-hibernate-orm-panache</artifactId>
-        </dependency>
 
-        <!-- JDBC driver dependencies -->
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-jdbc-postgresql</artifactId>
-        </dependency>
+
         <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-rest-jackson -->
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -127,10 +119,31 @@
             <version>3.13.0</version>
         </dependency>
 
+        <!-- Hibernate Reactive dependency -->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-mutiny</artifactId>
+            <artifactId>quarkus-hibernate-reactive</artifactId>
         </dependency>
+
+        <!-- Reactive SQL client for PostgreSQL -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-reactive-pg-client</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-hibernate-reactive-panache -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-reactive-panache</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jboss.logging/jboss-logging -->
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <version>3.5.3.Final</version>
+        </dependency>
+
 
     </dependencies>
 

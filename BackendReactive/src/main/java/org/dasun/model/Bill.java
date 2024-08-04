@@ -1,8 +1,5 @@
 package org.dasun.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +7,6 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This is the bill class
@@ -18,7 +14,6 @@ import java.util.Set;
  */
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "bills")
 public class Bill {
