@@ -9,7 +9,6 @@ import org.dasun.events.eventProducer.UserEventProducer;
 import org.dasun.model.User;
 import org.dasun.repo.UserRepo;
 import org.dasun.service.UserService;
-import org.hibernate.reactive.mutiny.Mutiny;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -61,6 +60,7 @@ public class UserServiceImpl implements UserService {
                 .onFailure().transform(error -> new Exception("Error fetching user information" + error.getMessage()));
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -86,58 +86,62 @@ public class UserServiceImpl implements UserService {
                     }
                 });
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Uni<String> updateUser(UserDTO userDTO, Long id){
+        return phoneNumberValidator(userDTO.getPhone())
+                .flatMap(isCorrect -> {
+                    if(isCorrect){
+                        return userRepo.getUserById(id)
+                                .flatMap(existingUser -> {
+                                    if(existingUser != null){
+                                        existingUser.setName(userDTO.getName());
+                                        existingUser.setEmail(userDTO.getEmail());
+                                        existingUser.setPhoneNumber(userDTO.getPhone());
+                                        existingUser.setAccountNumber(userDTO.getAccountNumber());
+                                        return userRepo.addUser(existingUser)
+                                                .onItem().transformToUni(item ->
+                                                        Uni.createFrom().item("User is updated successfully"))
+                                                .onFailure().transform(error ->
+                                                        new Exception("Error when updating the user" + error.getMessage())
+                                                );
+                                    }else{
+                                        return Uni.createFrom().failure(new Exception("User is not found with id: " + id));
+                                    }
+                                });
+                    }else {
+                        return Uni.createFrom()
+                                .failure(new Exception("Please enter a valid mobile number in the format +94xxxxxxxxx"));
+                    }
+                });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Uni<String> deleteUser(Long id){
+        return userRepo.getUserById(id)
+                .flatMap(user -> {
+                    return userRepo.removeUser(user)
+                            .onItem().transformToUni(item ->
+                                    Uni.createFrom().item("User is deleted successfully!"))
+                            .onFailure().transform(error ->
+                                    new Exception("Error removing the user" + error.getMessage()));
+                });
+    }
 //
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Transactional
-//    @Override
-//    public String updateUser(UserDTO userDTO, Long id) throws DatabaseException, InvalidPhoneNumberException {
-//        // To validate the phone number
-//        if(phoneNumberValidator(userDTO.getPhone())){
-//            // Temp user will be the user input
-//            User tempUser = userDTOMapper.mapDTOtoUser(userDTO);
-//
-//            // We fetch the user using id, and update the old user using the temp user
-//            User newUser = userRepo.findById(id);
-//            newUser.setName(tempUser.getName());
-//            newUser.setEmail(tempUser.getEmail());
-//            newUser.setPhoneNumber(tempUser.getPhoneNumber());
-//            newUser.setAccountNumber(tempUser.getAccountNumber());
-//
-//            try{ // Save the new user aka update
-//                userRepo.persist(newUser);
-//                return "User is updated succesfully";
-//            }catch (Exception e){
-//                throw new DatabaseException("Error when updating the user");
-//            }
-//        }else{
-//            throw new InvalidPhoneNumberException();
-//        }
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Transactional
-//    @Override
-//    public String deleteUser(Long id) throws DatabaseException {
-//        User tempUser = userRepo.findById(id);
-//        try { // Delete the tempUser
-//            userRepo.delete(tempUser);
-//            return "User is deleted succesfully";
-//        }catch (Exception e){
-//            throw new DatabaseException("Error when deleting the user");
-//        }
-//    }
-//
-//    /**
-//     * This method will validate the phone number of the user.
-//     * @param phoneNumber is the user input
-//     * @return this will return a boolean value
-//     * true - Phone number is valid
-//     * false - Phone number is invalid
-//     */
+    /**
+     * This method will validate the phone number of the user.
+     * @param phoneNumber is the user input
+     * @return this will return a boolean value
+     * true - Phone number is valid
+     * false - Phone number is invalid
+     */
     private Uni<Boolean> phoneNumberValidator(String phoneNumber) {
         if(phoneNumber == null){
             return Uni.createFrom().item(false);

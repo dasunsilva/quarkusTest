@@ -49,4 +49,31 @@ public class UserRepo{
         );
     }
 
+    public Uni<String> updateUser(User user){
+        return sessionFactory.withSession(session ->
+                session.withTransaction(transaction ->
+                        session.merge(user)
+                                .chain(session::flush)
+                                .onItem().transformToUni(item ->
+                                        Uni.createFrom().item("User is updated successfully!"))
+                                .onFailure().transform(error ->
+                                        new Exception("User update failed at the database"))
+                )
+        );
+    }
+
+    public Uni<String> removeUser(User user){
+        return sessionFactory.withSession(session ->
+                session.withTransaction(transaction ->
+                        session.merge(user).onItem()
+                                .transformToUni(session.remove())
+                        session.remove(user)
+                                .onItem().transformToUni(item ->
+                                        Uni.createFrom().item("User is removed successfully!"))
+                                .onFailure().transform(error ->
+                                        new Exception("User remove failed at databse" + error.getMessage()))
+                )
+        );
+    }
+
 }

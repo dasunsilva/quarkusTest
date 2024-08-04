@@ -81,38 +81,31 @@ public class UserController {
     }
 
 //
-//    /**
-//     * This method is used to edit the user with the given id
-//     * @param id The id of the user that need to be edited.
-//     * @param userDTO This will contain the information of the new user that need to be updated
-//     * @return return This will return a string telling the status of the edit user.
-//     * This will return a success message or a failure message depending on the situation
-//     */
-//    @PUT
-//    @Path("edit/{id}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String editUser(@PathParam("id") Long id, @Valid UserDTO userDTO){
-//        try {
-//            return userService.updateUser(userDTO,id);
-//        } catch (DatabaseException e) {
-//            return e.getMessage();
-//        }
-//    }
-//
-//
-//    /**'
-//     * This will delete a user with the given id
-//     * @param id The id of the user that need to be deleted
-//     * @return return This will return a string telling the status of the add bill.
-//     * This will return a success message or a failure message depending on the situation
-//     */
-//    @DELETE
-//    @Path("remove/{id}")
-//    public String removeUser(@PathParam("id") Long id) {
-//        try {
-//            return userService.deleteUser(id);
-//        } catch (DatabaseException e) {
-//            return e.getMessage();
-//        }
-//    }
+    /**
+     * This method is used to edit the user with the given id
+     *
+     * @param id      The id of the user that need to be edited.
+     * @param userDTO This will contain the information of the new user that need to be updated
+     * @return return This will return a string telling the status of the edit user.
+     * This will return a success message or a failure message depending on the situation
+     */
+    @PUT
+    @Path("edit/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Uni<String> editUser(@PathParam("id") Long id, @Valid UserDTO userDTO){
+            return userService.updateUser(userDTO,id);
+    }
+
+
+    /**'
+     * This will delete a user with the given id
+     * @param id The id of the user that need to be deleted
+     * @return return This will return a string telling the status of the add bill.
+     * This will return a success message or a failure message depending on the situation
+     */
+    @DELETE
+    @Path("remove/{id}")
+    public Uni<String> removeUser(@PathParam("id") Long id) {
+        return userService.deleteUser(id);
+    }
 }

@@ -19,7 +19,7 @@ public class UserEventConsumer {
             logger.info("A new user is added with id: " + event.getId() + " And name: " + event.getName());
         }
 
-        if(event.getEvent().equals("Update")){
+        if(event.getEvent().equals("Edit")){
             logger.info("A user with id : " + event.getId() + " And name: " + event.getName() + " is updated");
 
         }

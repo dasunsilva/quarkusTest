@@ -32,18 +32,19 @@ public interface UserService {
      */
     public Uni<String> addUser(UserDTO userDTO);
 
-//    /**
-//     * This method is used to update a user in the user repository
-//     * @param userDTO User input will be taken as a userDTO
-//     * @param id is the id of the user that need to be updated
-//     * @return this will return a string indicating the status of the transaction
-//     */
-//    public String updateUser(UserDTO userDTO, Long id) throws DatabaseException, InvalidPhoneNumberException ;
-//
-//    /**
-//     * This method is used to delete a user in the user repository
-//     * @param id is the id of the user that need to be deleted
-//     * @return this will return a string indicating the status of the transaction
-//     */
-//    public String deleteUser(Long id) throws DatabaseException;
+    /**
+     * This method is used to update a user in the user repository
+     *
+     * @param userDTO User input will be taken as a userDTO
+     * @param id      is the id of the user that need to be updated
+     * @return this will return a string indicating the status of the transaction
+     */
+    public Uni<String> updateUser(UserDTO userDTO, Long id);
+
+    /**
+     * This method is used to delete a user in the user repository
+     * @param id is the id of the user that need to be deleted
+     * @return this will return a string indicating the status of the transaction
+     */
+    public Uni<String> deleteUser(Long id);
 }
