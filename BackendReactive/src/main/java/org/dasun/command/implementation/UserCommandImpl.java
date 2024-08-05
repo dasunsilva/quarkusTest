@@ -9,9 +9,7 @@ import jakarta.inject.Inject;
 import org.dasun.command.UserCommand;
 import org.dasun.dto.UserDTO;
 import org.dasun.dto.mappers.UserDTOMapper;
-import org.dasun.model.User;
 import org.dasun.repo.UserRepo;
-import org.dasun.service.implementation.UserServiceImpl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
