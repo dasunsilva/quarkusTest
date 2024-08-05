@@ -144,6 +144,10 @@
             <version>3.5.3.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-vertx</artifactId>
+        </dependency>
 
     </dependencies>
 
