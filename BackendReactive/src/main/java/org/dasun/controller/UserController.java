@@ -1,11 +1,14 @@
 package org.dasun.controller;
 
+import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import org.dasun.command.UserCommand;
 import org.dasun.dto.UserDTO;
 import org.dasun.service.UserService;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
@@ -40,7 +43,13 @@ public class UserController {
      */
     @Inject
     UserService userService;
-//
+
+    /**
+     * This is used to get the user commands
+     */
+    @Inject
+    UserCommand userCommand;
+
     /**
      * This method is used to get all user details
      *
@@ -49,8 +58,10 @@ public class UserController {
     @GET
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<List<UserDTO>> getAllUsers(){
-        return userService.getAllUsers();
+    public Uni<Response> getAllUsers(){
+        return userService.getAllUsers()
+                .onItem().transform(userDTOS ->
+                        Response.ok(userDTOS).build());
     }
 
     /**
@@ -62,8 +73,10 @@ public class UserController {
     @GET
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<UserDTO> getUser(@PathParam("id") Long id){
-        return userService.getUser(id);
+    public Uni<Response> getUser(@PathParam("id") Long id){
+        return userService.getUser(id)
+                .onItem().transform(userDTO ->
+                        Response.ok(userDTO).build());
     }
 
     /**
@@ -76,8 +89,10 @@ public class UserController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<String> addUser(@Valid UserDTO userDTO) {
-        return userService.addUser(userDTO);
+    public Uni<Response> addUser(@Valid UserDTO userDTO) {
+        return userCommand.addUser(userDTO)
+                .onItem().transform(item ->
+                        Response.ok(item).build());
     }
 
 //
@@ -92,8 +107,10 @@ public class UserController {
     @PUT
     @Path("edit/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<String> editUser(@PathParam("id") Long id, @Valid UserDTO userDTO){
-            return userService.updateUser(userDTO,id);
+    public Uni<Response> editUser(@PathParam("id") Long id, @Valid UserDTO userDTO){
+            return userCommand.updateUser(userDTO,id)
+                    .onItem().transform(item ->
+                            Response.ok(item).build());
     }
 
 
@@ -106,6 +123,6 @@ public class UserController {
     @DELETE
     @Path("remove/{id}")
     public Uni<String> removeUser(@PathParam("id") Long id) {
-        return userService.deleteUser(id);
+        return userCommand.deleteUser(id);
     }
 }
