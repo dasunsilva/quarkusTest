@@ -22,11 +22,12 @@ public class BillItems {
     private int quantity;
     private int priceAtPurchase;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    // TODO: Add lazy loading here
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bill_id")
     private Bill bills;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id")
     private Item items;
 

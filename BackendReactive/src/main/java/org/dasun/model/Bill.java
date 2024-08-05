@@ -30,7 +30,8 @@ public class Bill {
     @Column(name = "bill_amount",nullable = false)
     private int amount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    // TODO: Add lazy loading here
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -38,6 +39,7 @@ public class Bill {
        This holds the information about the bill items.
        Bill item will have bill id, item id, quantitu, price at purchase
     */
-    @OneToMany(mappedBy = "bills", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    // TODO: Add lazy loading here
+    @OneToMany(mappedBy = "bills", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<BillItems> billItems;
 }

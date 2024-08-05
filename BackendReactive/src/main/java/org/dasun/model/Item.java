@@ -36,7 +36,8 @@ public class Item {
     This holds the information about the bill items.
     Bill item will have bill id, item id, quantitu, price at purchase
      */
-    @OneToMany(mappedBy = "items", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    // TODO: Add lazy loading here
+    @OneToMany(mappedBy = "items", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<BillItems> billItems;
 
 }
