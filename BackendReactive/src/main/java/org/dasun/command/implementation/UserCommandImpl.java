@@ -37,28 +37,46 @@ public class UserCommandImpl implements UserCommand {
 
     @Override
     public Uni<String> addUser(UserDTO userDTO) {
-        return bus.<String>request("add-user", userDTOMapper.mapDTOtoUser(userDTO))
-                .onItem().transformToUni(item ->
-                        Uni.createFrom().item(item.body()));
+        return phoneNumberValidator(userDTO.getPhone())
+                .onItem()
+                .transformToUni(isCorrect -> {
+                    if (isCorrect) {
+                        return bus.<String>request("add-user", userDTOMapper.mapDTOtoUser(userDTO))
+                                .onItem().transform(Message::body);
+                    }
+                    else {
+                        return Uni.createFrom().failure(new Exception("Enter a valid phone number in format +94xxxxxxxxx"));
+                    }
+                });
+
     }
 
     @Override
     @WithSession
     public Uni<String> updateUser(UserDTO userDTO, Long id) {
-        // TODO: Add phone number validation
-        return userRepo.findById(id)
-                .onItem()
-                .transformToUni(existingUser-> {
-                            existingUser.setName(userDTO.getName());
-                            existingUser.setEmail(userDTO.getEmail());
-                            existingUser.setAccountNumber(userDTO.getAccountNumber());
-                            existingUser.setPhoneNumber(userDTO.getPhone());
-                            // TODO: Add bill informations
+        return phoneNumberValidator(userDTO.getPhone())
+                .onItem().transformToUni(isCorrect -> {
+                    if (isCorrect) {
+                        return userRepo.findById(id)
+                                .onItem().ifNotNull()
+                                .transformToUni(existingUser-> {
+                                    existingUser.setName(userDTO.getName());
+                                    existingUser.setEmail(userDTO.getEmail());
+                                    existingUser.setAccountNumber(userDTO.getAccountNumber());
+                                    existingUser.setPhoneNumber(userDTO.getPhone());
+                                    // TODO: Add bill informations
 
-                            return bus.<String>request("edit-user", existingUser)
-                                    .onItem().transformToUni(item ->
-                                            Uni.createFrom().item(item.body()));
-                        });
+                                    return bus.<String>request("edit-user", existingUser)
+                                            .onItem().transformToUni(item ->
+                                                    Uni.createFrom().item(item.body()));
+                                })
+                                .onItem().ifNull().failWith(new Exception("User not found with id: "  + id));
+                    }
+                    else {
+                        return Uni.createFrom().failure(new Exception("Enter a valid phone number in format +94xxxxxxxxx"));
+                    }
+                });
+
     }
 
     @Override

@@ -61,7 +61,9 @@ public class UserController {
     public Uni<Response> getAllUsers(){
         return userService.getAllUsers()
                 .onItem().transform(userDTOS ->
-                        Response.ok(userDTOS).build());
+                        Response.ok(userDTOS).build())
+                .onFailure().recoverWithItem(error ->
+                        Response.status(Response.Status.BAD_REQUEST).entity(error.getMessage()).build());
     }
 
     /**
@@ -76,7 +78,9 @@ public class UserController {
     public Uni<Response> getUser(@PathParam("id") Long id){
         return userService.getUser(id)
                 .onItem().transform(userDTO ->
-                        Response.ok(userDTO).build());
+                        Response.ok(userDTO).build())
+                .onFailure().recoverWithItem(error ->
+                        Response.status(Response.Status.BAD_REQUEST).entity(error.getMessage()).build());
     }
 
     /**
@@ -92,7 +96,9 @@ public class UserController {
     public Uni<Response> addUser(@Valid UserDTO userDTO) {
         return userCommand.addUser(userDTO)
                 .onItem().transform(item ->
-                        Response.ok(item).build());
+                        Response.ok(item).build())
+                .onFailure().recoverWithItem(error ->
+                        Response.status(Response.Status.BAD_REQUEST).entity(error.getMessage()).build());
     }
 
 //
@@ -110,7 +116,9 @@ public class UserController {
     public Uni<Response> editUser(@PathParam("id") Long id, @Valid UserDTO userDTO){
             return userCommand.updateUser(userDTO,id)
                     .onItem().transform(item ->
-                            Response.ok(item).build());
+                            Response.ok(item).build())
+                    .onFailure().recoverWithItem(error ->
+                            Response.status(Response.Status.BAD_REQUEST).entity(error.getMessage()).build());
     }
 
 
