@@ -63,7 +63,8 @@ public class UserController {
                 .onItem().transform(userDTOS ->
                         Response.ok(userDTOS).build())
                 .onFailure().recoverWithItem(error ->
-                        Response.status(Response.Status.BAD_REQUEST).entity(error.getMessage()).build());
+                        Response.status(Response.Status.BAD_REQUEST)
+                                .entity(error.getMessage()).build());
     }
 
     /**
@@ -80,7 +81,8 @@ public class UserController {
                 .onItem().transform(userDTO ->
                         Response.ok(userDTO).build())
                 .onFailure().recoverWithItem(error ->
-                        Response.status(Response.Status.BAD_REQUEST).entity(error.getMessage()).build());
+                        Response.status(Response.Status.BAD_REQUEST)
+                                .entity(error.getMessage()).build());
     }
 
     /**
@@ -98,7 +100,8 @@ public class UserController {
                 .onItem().transform(item ->
                         Response.ok(item).build())
                 .onFailure().recoverWithItem(error ->
-                        Response.status(Response.Status.BAD_REQUEST).entity(error.getMessage()).build());
+                        Response.status(Response.Status.BAD_REQUEST)
+                                .entity(error.getMessage()).build());
     }
 
 //
@@ -118,7 +121,8 @@ public class UserController {
                     .onItem().transform(item ->
                             Response.ok(item).build())
                     .onFailure().recoverWithItem(error ->
-                            Response.status(Response.Status.BAD_REQUEST).entity(error.getMessage()).build());
+                            Response.status(Response.Status.BAD_REQUEST)
+                                    .entity(error.getMessage()).build());
     }
 
 
@@ -130,7 +134,12 @@ public class UserController {
      */
     @DELETE
     @Path("remove/{id}")
-    public Uni<String> removeUser(@PathParam("id") Long id) {
-        return userCommand.deleteUser(id);
+    public Uni<Response> removeUser(@PathParam("id") Long id) {
+        return userCommand.deleteUser(id)
+                .onItem().transform(item ->
+                        Response.ok(item).build())
+                .onFailure().recoverWithItem(error ->
+                        Response.status(Response.Status.BAD_REQUEST)
+                                .entity(error.getMessage()).build());
     }
 }
