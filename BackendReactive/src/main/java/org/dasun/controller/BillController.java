@@ -1,56 +1,64 @@
-//package org.dasun.controller;
-//
-//import jakarta.enterprise.context.RequestScoped;
-//import jakarta.inject.Inject;
-//import jakarta.validation.Valid;
-//import jakarta.ws.rs.*;
-//import jakarta.ws.rs.core.MediaType;
-//import org.dasun.dto.BillDTO;
-//import org.dasun.exceptions.DatabaseException;
-//import org.dasun.exceptions.InvalidLongException;
-//import org.dasun.service.BillService;
-//import org.dasun.service.BillService;
-//import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
-//
-//import java.util.List;
-//
-///**
-// * This is the controller which interacts with the user
-// * @author Dasun
-// */
-//@RequestScoped
-//@Path("bills")
-//@SecurityRequirement(name = "Keycloak")
-//public class BillController {
-//
-//    /**
-//     * This is used to get the bill service
-//     */
-//    @Inject
-//    BillService billService;
-//
-//    /**
-//     * This method is used to get all bill details
-//     * @return A list of BillDTO which holds the details about bills.
-//     */
-//    @GET
-//    @Path("get")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public List<BillDTO> getAllBills(){
-//        return billService.getAllBills();
-//    }
-//
-//    /**
-//     * This methxod is used to get the bill using teh bill id
-//     * @param id The id of the bill
-//     * @return This will return a single BillDTO corresponding to the given id
-//     */
-//    @GET
-//    @Path("get/{id}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public BillDTO getBill(@PathParam("id") Long id){
-//        return billService.getBill(id);
-//    }
+package org.dasun.controller;
+
+import io.smallrye.mutiny.Uni;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import org.dasun.service.BillService;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+
+/**
+ * This is the controller which interacts with the user
+ * @author Dasun
+ */
+@RequestScoped
+@Path("bills")
+@SecurityRequirement(name = "Keycloak")
+public class BillController {
+
+    /**
+     * This is used to get the bill service
+     */
+    @Inject
+    BillService billService;
+
+    /**
+     * This method is used to get all bill details
+     *
+     * @return A list of BillDTO which holds the details about bills.
+     */
+    @GET
+    @Path("get")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Uni<Response> getAllBills(){
+        return billService.getAllBills()
+                .onItem().transform(billDTOS -> Response.ok(billDTOS).build())
+                .onFailure().recoverWithItem(error ->
+                        Response.status(Response.Status.BAD_REQUEST)
+                                .entity(error.getMessage()).build());
+    }
+
+    /**
+     * This methxod is used to get the bill using teh bill id
+     *
+     * @param id The id of the bill
+     * @return This will return a single BillDTO corresponding to the given id
+     */
+    @GET
+    @Path("get/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Uni<Response> getBill(@PathParam("id") Long id){
+        return billService.getBill(id)
+                .onItem().transform(bill -> Response.ok(bill).build())
+                .onFailure().recoverWithItem(error ->
+                        Response.status(Response.Status.BAD_REQUEST)
+                                .entity(error.getMessage()).build());
+    }
 //
 //    /**
 //     * This method is used to add a bill to the database
@@ -102,4 +110,4 @@
 //            return e.getMessage();
 //        }
 //    }
-//}
+}

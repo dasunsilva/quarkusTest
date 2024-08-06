@@ -14,6 +14,7 @@ import org.dasun.repo.UserRepo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class defines the mappings between bill and billDTO
@@ -72,25 +73,35 @@ public class BillDTOMapper {
      * @return will be a bill object corresponding to billDTO
      */
     public Uni<Bill> mapDTOBill(BillDTO billDTO) {
-        return Uni.createFrom().item(() -> {
-            Bill bill = new Bill();
+        return userRepo.findById(billDTO.getUserId())
+                .flatMap(user -> {
+                    Bill bill = new Bill();
+                    bill.setId(billDTO.getId());
+                    bill.setDate(billDTO.getDate());
+                    bill.setAmount(billDTO.getAmount());
+                    bill.setUser(user);
 
-            bill.setId(billDTO.getId());
-            bill.setDate(billDTO.getDate());
-            bill.setAmount(billDTO.getAmount());
-            bill.setUser(userRepo.findById(billDTO.getUserId()));
+                    List<Uni<BillItems>> billItemListUnis = billDTO.getBillItemDTOS()
+                            .stream()
+                            .map(billItemDTO -> itemRepo.findById(billItemDTO.getItemId())
+                                    .map(item -> {
+                                        BillItems billItem = new BillItems();
+                                        billItem.setId(billItemDTO.getId());
+                                        billItem.setQuantity(billItemDTO.getQuantity());
+                                        billItem.setPriceAtPurchase(billItemDTO.getPriceAtPurchase());
+                                        billItem.setItems(item);
+                                        return billItem;
+                                    })
+                            ).toList();
 
-            List<BillItems> billItemsList = new ArrayList<>();
-            for(BillItemDTO billItemDTO: billDTO.getBillItemDTOS()) {
-                BillItems billItems = new BillItems();
-                billItems.setId(billItemDTO.getId());
-                billItems.setQuantity(billItemDTO.getQuantity());
-                billItems.setPriceAtPurchase(billItemDTO.getPriceAtPurchase());
-                billItems.setItems(itemRepo.findById(billItemDTO.getItemId()));
-                billItemsList.add(billItems);
-            }
-            bill.setBillItems(billItemsList);
-            return bill;
-        })
+                    return Uni.combine().all().unis(billItemListUnis)
+                            .with(billItems -> {
+                                bill.setBillItems(billItems
+                                        .stream()
+                                        .map(billItem -> (BillItems) billItem)
+                                        .toList());
+                                return bill;
+                            });
+                });
     }
 }
