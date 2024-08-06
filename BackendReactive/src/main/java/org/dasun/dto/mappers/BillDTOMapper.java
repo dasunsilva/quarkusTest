@@ -1,5 +1,6 @@
 package org.dasun.dto.mappers;
 
+import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -72,6 +73,8 @@ public class BillDTOMapper {
      * @param billDTO is the user input
      * @return will be a bill object corresponding to billDTO
      */
+
+    @WithSession
     public Uni<Bill> mapDTOBill(BillDTO billDTO) {
         return userRepo.findById(billDTO.getUserId())
                 .flatMap(user -> {
@@ -92,6 +95,8 @@ public class BillDTOMapper {
                                         billItem.setItems(item);
                                         return billItem;
                                     })
+                                    .onFailure().transform(error ->
+                                            new Exception("New exception at 1"))
                             ).toList();
 
                     return Uni.combine().all().unis(billItemListUnis)
@@ -101,7 +106,12 @@ public class BillDTOMapper {
                                         .map(billItem -> (BillItems) billItem)
                                         .toList());
                                 return bill;
-                            });
-                });
+                            })
+                            .onFailure().transform(error ->
+                                    new Exception("New exception at 2"));
+                })
+
+                .onFailure().transform(error ->
+                        new Exception("New exception at 3"));
     }
 }

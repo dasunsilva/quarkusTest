@@ -3,12 +3,11 @@ package org.dasun.controller;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.dasun.command.BillCommand;
+import org.dasun.dto.BillDTO;
 import org.dasun.service.BillService;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
@@ -27,6 +26,9 @@ public class BillController {
     @Inject
     BillService billService;
 
+
+    @Inject
+    BillCommand billCommand;
     /**
      * This method is used to get all bill details
      *
@@ -59,23 +61,25 @@ public class BillController {
                         Response.status(Response.Status.BAD_REQUEST)
                                 .entity(error.getMessage()).build());
     }
-//
-//    /**
-//     * This method is used to add a bill to the database
-//     * @param billDTO is the use input
-//     * @return This will return a string telling the status of the add bill.
-//     * This will return a success message or a failure message depending on the situation
-//     */
-//    @POST
-//    @Path("add")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String addBill(BillDTO billDTO) {
-//        try {
-//            return billService.addBill(billDTO);
-//        } catch (DatabaseException e) {
-//            return e.getMessage();
-//        }
-//    }
+
+    /**
+     * This method is used to add a bill to the database
+     *
+     * @param billDTO is the use input
+     * @return This will return a string telling the status of the add bill.
+     * This will return a success message or a failure message depending on the situation
+     */
+    @POST
+    @Path("add")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Uni<Response> addBill(BillDTO billDTO) {
+        return billCommand.addBill(billDTO)
+                .onItem().transform( item ->
+                        Response.ok(item).build())
+                .onFailure().recoverWithItem(error ->
+                        Response.status(Response.Status.BAD_REQUEST)
+                                .entity(error.getMessage()).build());
+    }
 //
 //    /**
 //     * This method is used to edit the bill with the given id

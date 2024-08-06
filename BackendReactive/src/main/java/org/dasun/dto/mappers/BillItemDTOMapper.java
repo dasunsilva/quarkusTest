@@ -1,5 +1,6 @@
 package org.dasun.dto.mappers;
 
+import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -44,6 +45,7 @@ public class BillItemDTOMapper {
      * @param billItemDTO is the user input
      * @return will return a BillItem object
      */
+    @WithSession
     public Uni<BillItems> mapDTOBill(BillItemDTO billItemDTO) {
         return billRepo.findById(billItemDTO.getBillId())
                 .flatMap(bill ->

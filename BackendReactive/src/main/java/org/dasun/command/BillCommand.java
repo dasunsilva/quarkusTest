@@ -1,8 +1,18 @@
 package org.dasun.command;
 
+import io.smallrye.mutiny.Uni;
 import org.dasun.dto.BillDTO;
 
 public interface BillCommand {
+
+    /**
+     * This is used to add a bill to the database
+     *
+     * @param billDTO is the user input. It will be taken as a billDTO
+     * @return this will return a string indicating the status of the transaction
+     */
+    public Uni<String> addBill(BillDTO billDTO);
+
     /**
      * This method is used to update a bill in the bill repository
      * @param billDTO User input will be taken as a billDTO
@@ -18,10 +28,4 @@ public interface BillCommand {
      */
     public String deleteBill(Long id);
 
-    /**
-     * This is used to add a bill to the database
-     * @param billDTO is the user input. It will be taken as a billDTO
-     * @return this will return a string indicating the status of the transaction
-     */
-    public String addBill(BillDTO billDTO);
 }
