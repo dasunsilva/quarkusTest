@@ -77,7 +77,7 @@ public class BillDTOMapper {
     @WithSession
     public Uni<Bill> mapDTOBill(BillDTO billDTO) {
         return userRepo.findById(billDTO.getUserId())
-                .flatMap(user -> {
+                .chain(user -> {
                     Bill bill = new Bill();
                     bill.setId(billDTO.getId());
                     bill.setDate(billDTO.getDate());
@@ -87,7 +87,9 @@ public class BillDTOMapper {
                     List<Uni<BillItems>> billItemListUnis = billDTO.getBillItemDTOS()
                             .stream()
                             .map(billItemDTO -> itemRepo.findById(billItemDTO.getItemId())
-                                    .map(item -> {
+                                    .onItem().invoke(item -> System.out.println("Item received"))
+                                    .onFailure().invoke(item -> System.out.println("Item not received" +billItemDTO.getItemId()))
+                                        .map(item -> {
                                         BillItems billItem = new BillItems();
                                         billItem.setId(billItemDTO.getId());
                                         billItem.setQuantity(billItemDTO.getQuantity());
@@ -112,6 +114,7 @@ public class BillDTOMapper {
                 })
 
                 .onFailure().transform(error ->
-                        new Exception("New exception at 3"));
+                        new Exception("Error: User with user id: " + billDTO.getUserId() + " is not found!"));
     }
+
 }

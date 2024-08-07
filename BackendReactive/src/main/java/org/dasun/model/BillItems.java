@@ -12,6 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "bill_item")
 public class BillItems {
 

@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import org.dasun.command.BillCommand;
 import org.dasun.dto.BillDTO;
 import org.dasun.dto.mappers.BillDTOMapper;
+import org.dasun.model.Bill;
 
 @ApplicationScoped
 public class BillCommandImpl implements BillCommand {
@@ -20,8 +21,10 @@ public class BillCommandImpl implements BillCommand {
 
     @Override
     public Uni<String> addBill(BillDTO billDTO) {
-        return bus.<String>request("add-bill", billDTOMapper.mapDTOBill(billDTO))
-                .onItem().transform(Message::body);
+        return billDTOMapper.mapDTOBill(billDTO)
+                .chain(bill ->
+                        bus.<String>request("add-bill", bill)
+                                .onItem().transform(Message::body));
     }
 
     @Override
