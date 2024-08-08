@@ -89,6 +89,7 @@ public class BillDTOMapper {
                             .map(billItemDTO -> itemRepo.findById(billItemDTO.getItemId())
                                     .onItem().invoke(item -> System.out.println("Item received"))
                                     .onFailure().invoke(item -> System.out.println("Item not received" +billItemDTO.getItemId()))
+                                    // TODO : Fix the issue here
                                         .map(item -> {
                                         BillItems billItem = new BillItems();
                                         billItem.setId(billItemDTO.getId());
